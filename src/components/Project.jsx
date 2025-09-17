@@ -1,12 +1,18 @@
-export default function Project({ project, userProject = false }) {
-  return (
-    <div>
-      <h2>{project.title}</h2>
-      <p>owned by {project.owner}</p>
-      <p>description: {project.description}</p>
-      <p>status: {project.status}</p>
+import { useContext } from "react"
+import AuthContext from "../contexts/AuthContext"
 
-      {userProject && <button>Request to join project</button>}
+export default function Project({ title, owner, description, status, userProject = false }) {
+
+    const {user} = useContext(AuthContext);
+ 
+    return (
+    <div>
+      <h2>{title}</h2>
+      <p>owned by {owner}</p>
+      <p>description: {description}</p>
+      <p>status: {status}</p>
+
+      {!userProject && user && <button>Request to join project</button>}
     </div>
   );
 }

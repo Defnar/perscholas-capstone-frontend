@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useMemo } from "react";
 import AuthContext from "../contexts/AuthContext";
 import useFetch from "../hooks/useFetch";
 import Project from "./Project";
@@ -14,25 +14,29 @@ export default function ProjectList({
 }) {
   const { api } = useContext(AuthContext);
 
-  const url = `projects/${privateProject ? "private" : ""}`;
+  const url = useMemo(
+    () => `projects/${privateProject ? "private" : ""}`,
+    [privateProject]
+  );
 
-  const [loading, data, error] = useFetch(url, {
-    params: {
-      title: title,
-      owner: owner,
-      sortBy: sortBy,
-      sortOrder: sortOrder,
-      pageSize: pageSize,
-      page: page,
-    },
-  });
+  const params = useMemo(() => {
+    title, owner, sortBy, sortOrder, pageSize, page;
+  }, [owner, page, pageSize, sortBy, sortOrder, title]);
+
+  const [data, loading, error] = useFetch(url, params);
 
   return (
     <ul>
       {data &&
-        data.map((project) => (
+        data.projects.map((project) => (
           <li key={project._id}>
-            <Project project={project} userProject={privateProject} />
+            <Project
+              title={project.title}
+              owner={project.owner.username}
+              description={project.description}
+              status={project.status}
+              userProject={privateProject}
+            />
           </li>
         ))}
     </ul>
