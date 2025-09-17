@@ -1,7 +1,7 @@
 import { useContext, useMemo } from "react";
-import AuthContext from "../contexts/AuthContext";
 import useFetch from "../hooks/useFetch";
 import Project from "./Project";
+import AuthContext from "../contexts/AuthContext";
 
 export default function ProjectList({
   privateProject = false,
@@ -12,8 +12,6 @@ export default function ProjectList({
   pageSize,
   page,
 }) {
-  const { api } = useContext(AuthContext);
-
   const url = useMemo(
     () => `projects/${privateProject ? "private" : ""}`,
     [privateProject]
