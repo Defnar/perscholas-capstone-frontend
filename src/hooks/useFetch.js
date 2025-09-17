@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 
-const useFetch = (url) => {
+const useFetch = (url, params) => {
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
@@ -17,7 +17,7 @@ const useFetch = (url) => {
 
     const fetchData = async () => {
       try {
-        const response = await api.get(url);
+        const response = await api.get(url, params);
 
         if (!ignore) {
           setData(response.data);
@@ -39,7 +39,7 @@ const useFetch = (url) => {
       ignore = true;
       setLoading(false);
     };
-  }, [api, url]);
+  }, [api, url, params]);
 
   return [data, loading, error];
 };

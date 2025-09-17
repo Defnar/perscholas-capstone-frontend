@@ -1,14 +1,21 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import useFetch from "../hooks/useFetch";
+import Task from "../components/Task";
 
-export default function ProjectPage({ projectId }) {
+export default function SingleProjectPage({ projectId }) {
   const { api } = useContext(AuthContext);
   const [tasks, setTasks] = useState(null);
   const [taskCount, setTaskCount] = useState(null);
   const [visibleCount, setVisibleCount] = useState(null);
+  const [permissions, setPermissions] = useState(null);
 
   const [data, loading, error] = useFetch(`projects/${projectId}`);
+
+  useEffect(async () => {
+    const response = await api.get(`/projects/${projectId}`)
+
+  }, [projectId])
 
   useEffect(() => {
     setTasks(data.tasks);
@@ -23,7 +30,7 @@ export default function ProjectPage({ projectId }) {
           <h2>{data.title}</h2>
           <section>{data.description}</section>
           <section>
-            <ul>{data.tasks.slice(0, visibleCount).map((task) => {})}</ul>
+            <ul>{data.tasks.slice(0, visibleCount).map((task) => <Task projectId={projectId} task={task} permissions={})}</ul>
           </section>
         </div>
       )}

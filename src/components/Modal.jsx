@@ -9,6 +9,10 @@ export default function Modal({ children }) {
     setModalOpen(true);
   }, []);
 
+  const closeModal = () => {
+    setModalOpen(false)
+  }
+
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (modalRef.current && !modalRef.current.contains(event.target)) {
@@ -31,5 +35,5 @@ export default function Modal({ children }) {
     }
   }, [modalOpen]);
 
-  return <div>{modalOpen && <div ref={modalRef}>{children}</div>}</div>;
+  return <div>{modalOpen && <div ref={modalRef}>{children({closeModal})}</div>}</div>;
 }
