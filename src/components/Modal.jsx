@@ -3,12 +3,12 @@ import { useEffect, useRef } from "react";
 export default function Modal({ children, modalOpen, setModalOpen }) {
   const modalRef = useRef(null);
 
-  console.log("modal button pressed");
-
   useEffect(() => {
     const handleOutsideClick = (event) => {
-      if (modalRef.current && event && !modalRef.current.contains(event.target)) {
-        setModalOpen(false);
+      if (modalRef.current) {
+        if (event && !modalRef.current.contains(event.target)) {
+          setModalOpen(false);
+        }
       }
     };
 
@@ -18,13 +18,15 @@ export default function Modal({ children, modalOpen, setModalOpen }) {
       }
     };
 
-    if (modalOpen) {
-      document.addEventListener("mousedown", handleOutsideClick());
-      document.addEventListener("keydown", handleEscapeKey());
-    } else {
+    document.addEventListener("mousedown", handleOutsideClick);
+    document.addEventListener("keydown", handleEscapeKey);
+    console.log("event listeners added");
+
+    return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
-      document.removeEventListener("keydown", handleEscapeKey());
-    }
+      document.removeEventListener("keydown", handleEscapeKey);
+      console.log("event listeners removed");
+    };
   }, [modalOpen, setModalOpen]);
 
   return <>{modalOpen && <div ref={modalRef}>{children}</div>}</>;
