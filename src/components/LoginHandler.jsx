@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 
 export default function LoginHandler({ closeModal }) {
@@ -149,9 +149,47 @@ export default function LoginHandler({ closeModal }) {
       }));
     }
   };
+  ////////////////////////////////
+  ////////////oauth///////////////
+  ////////////////////////////////
+  useEffect(() => {
+    const handleMessage = async (event) => {
+      console.log(event.origin);
+      if (event.origin !== import.meta.env.VITE_ORIGIN_URL) return;
+
+      const { type, token, userId } = event.data;
+
+      console.log(userId);
+
+      if (!type || type !== "oauthSuccess") return;
+
+      const user = await api.get(`/users/find/${userId}`);
+
+      console.log(user);
+
+      setToken(token);
+      setUser(user);
+
+      closeModal();
+    };
+
+    window.addEventListener("message", handleMessage);
+
+    return () => {
+      window.removeEventListener("message", handleMessage);
+    };
+  }, []);
+
+  const handleOauth = async () => {
+    window.open(
+      `${import.meta.env.VITE_API_URL}/users/auth/github`,
+      "Github Oauth"
+    );
+  };
 
   return (
     <>
+      <button onClick={handleOauth}>Github button</button>
       <h2>Already a member? Login here!</h2>
       <form onSubmit={handleLoginSubmit}>
         <label htmlFor="email">Email: </label>
@@ -220,7 +258,9 @@ export default function LoginHandler({ closeModal }) {
           onChange={handleRegistrationChange}
           onBlur={handleRegistrationBlur}
         />
-        {!registrationValidation.confirmPassword && <span>passwords do not match</span>}
+        {!registrationValidation.confirmPassword && (
+          <span>passwords do not match</span>
+        )}
         <button type="submit">Register</button>
       </form>
     </>

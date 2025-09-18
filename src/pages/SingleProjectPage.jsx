@@ -11,11 +11,7 @@ export default function SingleProjectPage({ projectId }) {
   const [permissions, setPermissions] = useState(null);
 
   const [data, loading, error] = useFetch(`projects/${projectId}`);
-
-  useEffect(async () => {
-    const response = await api.get(`/projects/${projectId}`)
-
-  }, [projectId])
+  
 
   useEffect(() => {
     setTasks(data.tasks);
@@ -30,7 +26,7 @@ export default function SingleProjectPage({ projectId }) {
           <h2>{data.title}</h2>
           <section>{data.description}</section>
           <section>
-            <ul>{data.tasks.slice(0, visibleCount).map((task) => <Task projectId={projectId} task={task} permissions={})}</ul>
+            <ul>{data.tasks.slice(0, visibleCount).map((task) => <Task projectId={projectId} task={task} permissions={permissions} />)}</ul>
           </section>
         </div>
       )}
