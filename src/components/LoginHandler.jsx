@@ -160,12 +160,18 @@ export default function LoginHandler({ closeModal }) {
 
       if (!type || type !== "oauthSuccess") return;
 
-      const user = await api.get(`/users/find/${userId}`);
+      try {
+        const response = await api.get(`/users/find/${userId}`);
 
-      setToken(token);
-      setUser(user);
+        const user = response.data;
 
-      closeModal();
+        setToken(token);
+        setUser(user);
+        
+        closeModal();
+      } catch (err) {
+        console.log(err);
+      }
     };
 
     window.addEventListener("message", handleMessage);
@@ -173,7 +179,7 @@ export default function LoginHandler({ closeModal }) {
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, []);
+  }, [api, closeModal, setToken, setUser]);
 
   const handleOauth = async () => {
     window.open(

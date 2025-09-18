@@ -20,12 +20,10 @@ export default function Modal({ children, modalOpen, setModalOpen }) {
 
     document.addEventListener("mousedown", handleOutsideClick);
     document.addEventListener("keydown", handleEscapeKey);
-    console.log("event listeners added");
 
     return () => {
       document.removeEventListener("mousedown", handleOutsideClick);
       document.removeEventListener("keydown", handleEscapeKey);
-      console.log("event listeners removed");
     };
   }, [modalOpen, setModalOpen]);
 
