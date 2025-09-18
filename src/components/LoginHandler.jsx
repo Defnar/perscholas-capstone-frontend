@@ -154,18 +154,13 @@ export default function LoginHandler({ closeModal }) {
   ////////////////////////////////
   useEffect(() => {
     const handleMessage = async (event) => {
-      console.log(event.origin);
       if (event.origin !== import.meta.env.VITE_ORIGIN_URL) return;
 
       const { type, token, userId } = event.data;
 
-      console.log(userId);
-
       if (!type || type !== "oauthSuccess") return;
 
       const user = await api.get(`/users/find/${userId}`);
-
-      console.log(user);
 
       setToken(token);
       setUser(user);
