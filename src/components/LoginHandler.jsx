@@ -2,8 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 
 export default function LoginHandler({ closeModal }) {
-  const { api } = useContext(AuthContext);
-  const { setToken, setUser } = useContext(AuthContext);
+  const { api, setToken, setUser } = useContext(AuthContext);
   const [loginData, setLoginData] = useState({
     password: "",
     email: "",
@@ -107,8 +106,9 @@ export default function LoginHandler({ closeModal }) {
         email: registrationData.email,
         password: registrationData.password,
       });
-
       console.log(response);
+
+      closeModal();
     } catch (err) {
       console.log(err);
     }
@@ -152,6 +152,8 @@ export default function LoginHandler({ closeModal }) {
   ////////////////////////////////
   ////////////oauth///////////////
   ////////////////////////////////
+
+  //creates an event listener for any open windows, runs close
   useEffect(() => {
     const handleMessage = async (event) => {
       if (event.origin !== import.meta.env.VITE_ORIGIN_URL) return;
@@ -167,7 +169,7 @@ export default function LoginHandler({ closeModal }) {
 
         setToken(token);
         setUser(user);
-        
+
         closeModal();
       } catch (err) {
         console.log(err);
@@ -239,7 +241,7 @@ export default function LoginHandler({ closeModal }) {
           Password:{" "}
         </label>
         <input
-          type="password"
+          type="text"
           name="password"
           value={registrationData.password}
           onChange={handleRegistrationChange}
@@ -253,7 +255,7 @@ export default function LoginHandler({ closeModal }) {
         )}
         <label htmlFor="confirmPassword">confirm password:</label>
         <input
-          type="password"
+          type="text"
           name="confirmPassword"
           value={registrationData.confirmPassword}
           onChange={handleRegistrationChange}

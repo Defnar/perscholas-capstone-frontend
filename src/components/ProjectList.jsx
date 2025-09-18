@@ -16,6 +16,7 @@ export default function ProjectList({
     [privateProject]
   );
 
+  //tracks params and changes them as they changed
   const params = useMemo(() => {
     title, owner, sortBy, sortOrder, pageSize, page;
   }, [owner, page, pageSize, sortBy, sortOrder, title]);

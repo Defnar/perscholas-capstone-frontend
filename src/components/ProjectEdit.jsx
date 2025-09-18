@@ -22,19 +22,19 @@ export default function ProjectEdit({
   const { api } = useContext(AuthContext);
   const [titleValidity, setTitleValidity] = useState(true);
 
+
+  //list of statuses to map to options
   const statusArr = ["To Do", "In Progress", "Done", "Overdue", "Archive"];
 
   const handleChange = (event) => {
     const { name, value } = event.target;
     console.log(name, value);
 
+    //changes private to boolean
     let newValue = value;
-
     if (name === "private") newValue = value === "true";
 
     setProjectData((prev) => ({ ...prev, [name]: newValue }));
-
-    console.log(projectData);
   };
 
   const handleBlur = (event) => {
@@ -43,6 +43,7 @@ export default function ProjectEdit({
     if (name === "title") setTitleValidity(value.length > 0);
   };
 
+  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -51,7 +52,7 @@ export default function ProjectEdit({
       return;
     }
     try {
-        let response;
+      let response;
       if (projectData._id.length > 0) {
         response = await api.put(`projects/${projectData._id}`, {
           title: projectData.title,
@@ -71,6 +72,7 @@ export default function ProjectEdit({
       }
 
       console.log(response.data);
+      closeModal();
     } catch (err) {
       console.log(err);
     }
@@ -84,6 +86,7 @@ export default function ProjectEdit({
         name="title"
         onChange={handleChange}
         value={projectData.title}
+        onBlur={handleBlur}
       />
       {!titleValidity && <span>Title is required</span>}
       <label htmlFor="description">description: </label>
