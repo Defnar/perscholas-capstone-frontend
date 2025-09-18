@@ -8,7 +8,6 @@ export default function Home() {
     return (
         <>
         <button onClick={() => setIsPrivate(prev => !prev)}>toggle Private</button>
-        <Header />
         <ProjectList privateProject={isPrivate}/>
         </>
     )

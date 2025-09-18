@@ -13,6 +13,11 @@ export default function AppProviders({ children }) {
     })
   );
 
+  
+  useEffect(() => {
+    console.log("mounting auth providers")
+  }, [])
+
   useEffect(() => {
     const interceptor = apiRef.current.interceptors.request.use((config) => {
       if (token) config.headers.Authorization = `Bearer ${token}`;

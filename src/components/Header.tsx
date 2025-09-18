@@ -8,10 +8,10 @@ export default function Header() {
   const { user } = useContext(AuthContext);
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [projectModalOpen, setProjectModalOpen] = useState(false);
-  console.log("login modal: ", loginModalOpen);
+
+  console.log(user);
 
   const toggleLoginModal = useCallback(() => {
-    console.log("toggling login model");
     setLoginModalOpen((prev) => !prev);
   }, [setLoginModalOpen]);
 

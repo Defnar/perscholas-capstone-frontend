@@ -1,6 +1,7 @@
 import { useMemo } from "react";
 import useFetch from "../hooks/useFetch";
 import Project from "./Project";
+import { useNavigate } from "react-router-dom";
 
 export default function ProjectList({
   privateProject = false,
@@ -25,11 +26,18 @@ export default function ProjectList({
   console.log(loading);
   console.log(error);
 
+  const navigate = useNavigate();
+  const handleClick = (projectId) => {
+    if (!privateProject) return;
+
+    navigate(`/project/${projectId}`)
+  }
+
   return (
     <ul>
       {data &&
         data.projects.map((project) => (
-          <li key={project._id}>
+          <li key={project._id} onClick={() => handleClick(project._id)}>
             <Project
               title={project.title}
               owner={project.owner.username}
