@@ -6,6 +6,8 @@ export default function AppProviders({ children }) {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
 
+  const attemptedRefreshRef = useRef(false);
+
   const apiRef = useRef(
     axios.create({
       baseURL: import.meta.env.VITE_API_URL,
@@ -13,11 +15,18 @@ export default function AppProviders({ children }) {
     })
   );
 
-  
-  useEffect(() => {
-    console.log("mounting auth providers")
-  }, [])
+  const apiRefreshRef = useRef(
+    axios.create({
+      baseURL: import.meta.env.VITE_API_URL,
+      headers: { "Content-type": "application/json" },
+    })
+  );
 
+  useEffect(() => {
+    console.log("mounting auth providers");
+  }, []);
+
+  //attach token to call
   useEffect(() => {
     const interceptor = apiRef.current.interceptors.request.use((config) => {
       if (token) config.headers.Authorization = `Bearer ${token}`;
@@ -29,6 +38,72 @@ export default function AppProviders({ children }) {
       currentRef.interceptors.request.eject(interceptor);
     };
   }, [token]);
+
+  //if response is 401, tries to refresh token in background before pushing the original call.
+  useEffect(() => {
+    const interceptor = apiRef.current.interceptors.response.use(
+      (response) => response,
+      async (error) => {
+        const config = error.config;
+        if (error.response && error.response.status === 401 && !attemptedRefreshRef.current) {
+          try {
+            attemptedRefreshRef.current = true;
+            const refreshResponse = await apiRefreshRef.current.get("refreshToken", {
+              withCredentials: true,
+            });
+            const { token: newToken, user: newUser } = refreshResponse.data;
+
+            console.log("this is being called");
+
+            setToken(newToken);
+            setUser(newUser);
+
+            config.headers.Authorization = `Bearer ${newToken}`;
+            attemptedRefreshRef.current = false;
+            return apiRef.current(config);
+          } catch (err) {
+            console.log("Token refresh failed:", err);
+            attemptedRefreshRef.current = false;
+            return Promise.reject(error);
+          }
+        }
+
+        return Promise.reject(error);
+      }
+    );
+
+    const currentRef = apiRef.current;
+    return () => {
+      currentRef.interceptors.response.eject(interceptor);
+    };
+  }, []);
+
+  //attempting to do refresh logging in, I'm tired of logging myself in
+  useEffect(() => {
+    const refreshLogin = async () => {
+      attemptedRefreshRef.current = true;
+      try {
+        const response = await apiRefreshRef.current.get("refreshToken", {
+          withCredentials: true,
+        });
+
+        const { token: tokenData, user: userData } = response.data;
+
+        setToken(tokenData);
+        setUser(userData);
+        attemptedRefreshRef.current = false;
+      } catch (err) {
+        console.log(err);
+        setToken(null);
+        setUser(null);
+        attemptedRefreshRef.current = false;
+      }
+    };
+
+    if (!attemptedRefreshRef.current) {
+      refreshLogin();
+    }
+  }, []);
 
   return (
     <AuthContext.Provider

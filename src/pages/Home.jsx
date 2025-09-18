@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Header from "../components/Header";
 import ProjectList from "../components/ProjectList";
 
 export default function Home() {
