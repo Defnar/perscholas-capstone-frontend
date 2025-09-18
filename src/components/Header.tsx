@@ -3,6 +3,7 @@ import AuthContext from "../contexts/AuthContext";
 import Modal from "./Modal";
 import LoginHandler from "./LoginHandler";
 import ProjectEdit from "./ProjectEdit";
+import { Link } from "react-router-dom";
 
 export default function Header() {
   const { user } = useContext(AuthContext);
@@ -21,7 +22,7 @@ export default function Header() {
 
   return (
     <>
-      <p>home button</p>
+      <Link to="/">Home button</Link>
       <h1>ProTracker</h1>
       {!user && <button onClick={toggleLoginModal}>Login/register</button>}
       {user && <button onClick={toggleProjectModal}>New Project</button>}

@@ -3,7 +3,13 @@ import AuthContext from "../contexts/AuthContext";
 import Modal from "./Modal";
 import EditTask from "./EditTask";
 
-export default function Task({ projectId, task, permissions, userRole }) {
+export default function Task({
+  projectId,
+  task,
+  permissions,
+  userRole,
+  setTasks
+}) {
   //title, description, deadline, status
   const [status, setStatus] = useState(task.status);
   const [editTask, setEditTask] = useState(false);
@@ -47,19 +53,28 @@ export default function Task({ projectId, task, permissions, userRole }) {
     const newStatus = event.target.value;
 
     setStatus(newStatus);
-
-    const response = await api.put(
-      `tasks/${projectId}/tasks/${task._id}/status`,
-      {
-        status: newStatus,
-      }
-    );
+    try {
+      const response = await api.put(
+        `projects/${projectId}/tasks/${task._id}/status`,
+        {
+          status: newStatus,
+        }
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onTaskDelete = async () => {
-    const response = await api.delete(
-      `tasks/${projectId}/tasks/${task._id}`
-    );
+    try {
+      const response = await api.delete(
+        `projects/${projectId}/tasks/${task._id}`
+      );
+      
+      setTasks(prev => prev.filter(oldTask => oldTask._id !== task._id))
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const onTaskEdit = () => {
@@ -71,7 +86,7 @@ export default function Task({ projectId, task, permissions, userRole }) {
       <li>
         <h2>{task.title}</h2>
         <p>{task.description}</p>
-        <p>{task.deadline.toLocaleString()}</p>
+        <p>{task.deadline?.toLocaleString()}</p>
         {statusUpdateable ? (
           <select onChange={changeStatus} value={status}>
             {statusOptions()}
@@ -84,7 +99,11 @@ export default function Task({ projectId, task, permissions, userRole }) {
       </li>
       {editTask && (
         <Modal>
-          <EditTask task={task} statusList={statusArr} setEditTask={setEditTask} />
+          <EditTask
+            task={task}
+            statusList={statusArr}
+            setEditTask={setEditTask}
+          />
         </Modal>
       )}
     </>

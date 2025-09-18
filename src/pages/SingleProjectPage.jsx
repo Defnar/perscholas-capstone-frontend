@@ -3,6 +3,8 @@ import AuthContext from "../contexts/AuthContext";
 import useFetch from "../hooks/useFetch";
 import Task from "../components/Task";
 import { useParams } from "react-router-dom";
+import Modal from "../components/Modal";
+import EditTask from "../components/EditTask";
 
 export default function SingleProjectPage() {
   const { user } = useContext(AuthContext);
@@ -15,34 +17,36 @@ export default function SingleProjectPage() {
 
   const [data, loading, error] = useFetch(`projects/${projectId}`);
 
-  useEffect(() => {
-    console.log(error)
-  }, [error])
+  const [taskModalOpen, setTaskModalOpen] = useState(false);
 
   useEffect(() => {
-    if (data && data.tasks) {
+    console.log(error);
+  }, [error]);
+
+  useEffect(() => {
+    if (!data || !data.tasks) return
       setTasks(data.tasks);
-      setTaskCount(data.tasks.length || 0);
-      setVisibleCount(Math.min(data.tasks.length, 10) || 0);
       setProjectData(data);
     }
-  }, [data]);
+  , [data]);
 
   useEffect(() => {
-    console.log("project data:", projectData)
-  }, [projectData])
+    if (!tasks) return;
+    setTaskCount(tasks.length || 0);
+    setVisibleCount(Math.min(tasks.length, 10) || 0);
+  }, [tasks]);
+
   //checks project list, finds user and assigns permissions
   useEffect(() => {
     if (!user || !projectData) return;
 
     console.log(user._id);
     console.log(projectData);
-    
+
     const userObject = projectData.user.find(
       (projectUser) => projectUser.user._id == user._id
     );
 
-    console.log(userObject);
     setPermissions(userObject.permissions);
   }, [projectData, user]);
 
@@ -50,9 +54,13 @@ export default function SingleProjectPage() {
     setVisibleCount((prev) => Math.min(prev + 5, taskCount));
   };
 
+  const toggleTaskModal = () => {
+    setTaskModalOpen((prev) => !prev);
+  };
+
   return (
     <>
-    {!user && <h1>Unauthorized, Please Log In</h1>}
+      {!user && <h1>Unauthorized, Please Log In</h1>}
       {user && data && (
         <div>
           <h2>{data.title}</h2>
@@ -62,15 +70,22 @@ export default function SingleProjectPage() {
               Showing {visibleCount} of {taskCount} task
               {taskCount !== 1 ? "s" : ""}
             </p>
+            {permissions && permissions.includes("addTask") && (
+              <button onClick={toggleTaskModal}>Add New Task</button>
+            )}
             <ul>
               {tasks &&
+                permissions &&
                 tasks
                   .slice(0, visibleCount)
                   .map((task) => (
                     <Task
+                      key={task._id}
                       projectId={projectId}
                       task={task}
                       permissions={permissions}
+                      taskList={tasks}
+                      setTasks={setTasks}
                     />
                   ))}
             </ul>
@@ -79,6 +94,16 @@ export default function SingleProjectPage() {
             </button>
           </section>
         </div>
+      )}
+
+      {taskModalOpen && (
+        <Modal modalOpen={taskModalOpen} setModalOpen={setTaskModalOpen}>
+          <EditTask
+            closeModal={toggleTaskModal}
+            projectId={projectId}
+            setTasks={setTasks}
+          />
+        </Modal>
       )}
     </>
   );

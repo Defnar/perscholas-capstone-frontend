@@ -1,17 +1,28 @@
 import { useContext, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function EditTask({
-  task,
-  statusList,
+  title,
+  description,
+  status,
+  deadline,
   closeModal,
-  setEditTask,
+  editTask,
   projectId,
+  taskId,
+  setTasks,
 }) {
-  const [taskInfo, setTaskInfo] = useState(task);
+  const [taskInfo, setTaskInfo] = useState({
+    title: title || "",
+    description: description || "",
+    status: status || "To Do",
+    deadline: deadline ? new Date(deadline) : "",
+  });
   const { api } = useContext(AuthContext);
 
-  const statusDropdown = statusList.map((stat) => (
+  const statusArr = ["To Do", "In Progress", "Done", "Overdue", "Archive"];
+  const statusDropdown = statusArr.map((stat) => (
     <option key={stat} value={stat}>
       {stat}
     </option>
@@ -26,7 +37,6 @@ export default function EditTask({
   };
 
   const handleCancel = () => {
-    setEditTask(false);
     closeModal();
   };
 
@@ -34,17 +44,33 @@ export default function EditTask({
     event.preventDefault();
 
     try {
-      const response = await api.put(
-        `projects/${projectId}/tasks/${task._id}`,
-        {
-          ...taskInfo,
-        }
-      );
+      const response = editTask
+        ? await api.put(`projects/${projectId}/tasks/${taskId}`, {
+            title: taskInfo.title,
+            description: taskInfo.description,
+            deadline: taskInfo.deadline,
+            status: taskInfo.status,
+          })
+        : await api.post(`projects/${projectId}/tasks`, {
+            title: taskInfo.title,
+            description: taskInfo.description,
+            deadline: taskInfo.deadline,
+            status: taskInfo.status,
+          });
 
-      console.log(response);  //toastify
+      console.log(response.data); //toastify
+
+      if (taskId) {
+        setTasks((prev) =>
+          prev.map((oldTask) => (oldTask._id === taskId ? response.data : oldTask))
+        );
+      }
+
+      if (!taskId) {
+        setTasks((prev) => [...prev, response.data]);
+      }
 
       closeModal();
-
     } catch (err) {
       console.log(err);
     }

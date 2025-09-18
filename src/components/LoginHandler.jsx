@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginHandler({ closeModal }) {
   const { api, setToken, setUser } = useContext(AuthContext);
@@ -153,6 +154,8 @@ export default function LoginHandler({ closeModal }) {
   ////////////oauth///////////////
   ////////////////////////////////
 
+  const navigate = useNavigate();
+
   //creates an event listener for any open windows, runs close
   useEffect(() => {
     const handleMessage = async (event) => {
@@ -169,7 +172,7 @@ export default function LoginHandler({ closeModal }) {
 
         setToken(token);
         setUser(user);
-
+        navigate("/");
         closeModal();
       } catch (err) {
         console.log(err);
