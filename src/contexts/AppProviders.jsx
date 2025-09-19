@@ -1,11 +1,16 @@
 import { useEffect, useRef, useState } from "react";
 import AuthContext from "./AuthContext";
 import axios from "axios";
+import { useLocation, useNavigate } from "react-router-dom";
+
+//implementing refresh token system was a pain. this took so long to work out.  
 
 export default function AppProviders({ children }) {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true); 
 
+  //earlier way to handle refreshing.  Tried swapping to state, broke the app (:
   const attemptedRefreshRef = useRef(false);
 
   const apiRef = useRef(
@@ -45,12 +50,19 @@ export default function AppProviders({ children }) {
       (response) => response,
       async (error) => {
         const config = error.config;
-        if (error.response && error.response.status === 401 && !attemptedRefreshRef.current) {
+        if (
+          error.response &&
+          error.response.status === 401 &&
+          !attemptedRefreshRef.current
+        ) {
           try {
             attemptedRefreshRef.current = true;
-            const refreshResponse = await apiRefreshRef.current.get("refreshToken", {
-              withCredentials: true,
-            });
+            const refreshResponse = await apiRefreshRef.current.get(
+              "refreshToken",
+              {
+                withCredentials: true,
+              }
+            );
             const { token: newToken, user: newUser } = refreshResponse.data;
 
             console.log("this is being called");
@@ -78,6 +90,11 @@ export default function AppProviders({ children }) {
     };
   }, []);
 
+  //part of trying to get refreshing to work right and breaking race conditions.  Removing these caused token refreshing to not function.  Do I know why?  absolutely not
+  // probably something to do with double mounting, app loading before token retrieval finished, etc etc  (:
+  const navigate = useNavigate();
+  const { pathname } = useLocation();
+
   //attempting to do refresh logging in, I'm tired of logging myself in
   useEffect(() => {
     const refreshLogin = async () => {
@@ -92,11 +109,16 @@ export default function AppProviders({ children }) {
         setToken(tokenData);
         setUser(userData);
         attemptedRefreshRef.current = false;
+
+        setLoading(false); 
+        navigate(pathname, { replace: true }); 
       } catch (err) {
         console.log(err);
         setToken(null);
         setUser(null);
         attemptedRefreshRef.current = false;
+        setLoading(false); 
+        navigate("/", { replace: true });
       }
     };
 
@@ -109,7 +131,7 @@ export default function AppProviders({ children }) {
     <AuthContext.Provider
       value={{ token, setToken, api: apiRef.current, user, setUser }}
     >
-      {children}
+      {!loading && children}
     </AuthContext.Provider>
   );
 }

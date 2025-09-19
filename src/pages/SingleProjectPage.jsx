@@ -61,10 +61,10 @@ export default function SingleProjectPage() {
   return (
     <>
       {!user && <h1>Unauthorized, Please Log In</h1>}
-      {user && data && (
+      {user && projectData && (
         <div>
-          <h2>{data.title}</h2>
-          <section>{data.description}</section>
+          <h2>{projectData.title}</h2>
+          <section>{projectData.description}</section>
           <section>
             {projectData && <Collaborators collabList={projectData.user} />}
           </section>
