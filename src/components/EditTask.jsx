@@ -1,6 +1,5 @@
 import { useContext, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 export default function EditTask({
   title,
@@ -17,7 +16,7 @@ export default function EditTask({
     title: title || "",
     description: description || "",
     status: status || "To Do",
-    deadline: deadline ? new Date(deadline) : "",
+    deadline: deadline ? new Date(deadline).toISOString().slice(0, 16) : "",
   });
   const { api } = useContext(AuthContext);
 
@@ -62,7 +61,9 @@ export default function EditTask({
 
       if (taskId) {
         setTasks((prev) =>
-          prev.map((oldTask) => (oldTask._id === taskId ? response.data : oldTask))
+          prev.map((oldTask) =>
+            oldTask._id === taskId ? response.data : oldTask
+          )
         );
       }
 

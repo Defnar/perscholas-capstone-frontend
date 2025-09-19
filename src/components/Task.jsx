@@ -8,36 +8,37 @@ export default function Task({
   task,
   permissions,
   userRole,
-  setTasks
+  setTasks,
 }) {
   //title, description, deadline, status
   const [status, setStatus] = useState(task.status);
-  const [editTask, setEditTask] = useState(false);
+  const [editTaskModal, setEditTaskModal] = useState(false);
 
   const { api } = useContext(AuthContext);
 
-  const statusUpdateable =
+  const statusUpdateable = userRole === "owner";
+  permissions.some(
+    (perm) =>
+      perm === "updateTaskStatus" ||
+      perm === "editProject" ||
+      perm === "editTask"
+  );
+
+  const taskEditable =
+    userRole === "owner" ||
+    permissions.some((perm) => perm === "editProject" || perm === "editTask");
+
+  const taskDeletable =
+    userRole === "owner" ||
     permissions.some(
-      (perm) =>
-        perm === "updateTaskStatus" ||
-        perm === "editProject" ||
-        perm === "editTask"
-    ) || userRole === "owner";
-
-  const taskEditable = permissions.some(
-    (perm) =>
-      perm === "editProject" || perm === "editTask" || userRole === "owner"
-  );
-
-  const taskDeletable = permissions.some(
-    (perm) =>
-      perm === "deleteProject" || perm === "deleteTask" || userRole === "owner"
-  );
+      (perm) => perm === "deleteProject" || perm === "deleteTask"
+    );
 
   const statusArr = ["To Do", "In Progress", "Done", "Overdue"];
 
   if (
-    permissions.some((perm) => perm === "archiveTask" || userRole === "owner")
+    userRole === "owner" ||
+    permissions.some((perm) => perm === "archiveTask")
   )
     statusArr.push("Archive");
 
@@ -70,15 +71,16 @@ export default function Task({
       const response = await api.delete(
         `projects/${projectId}/tasks/${task._id}`
       );
-      
-      setTasks(prev => prev.filter(oldTask => oldTask._id !== task._id))
+
+      setTasks((prev) => prev.filter((oldTask) => oldTask._id !== task._id));
     } catch (err) {
       console.log(err);
     }
   };
 
-  const onTaskEdit = () => {
-    setEditTask(true);
+  const toggleEditModal = () => {
+    console.log("toggling task");
+    setEditTaskModal((prev) => !prev);
   };
 
   return (
@@ -86,7 +88,7 @@ export default function Task({
       <li>
         <h2>{task.title}</h2>
         <p>{task.description}</p>
-        <p>{task.deadline?.toLocaleString()}</p>
+        <p>{task.deadline && new Date(task.deadline).toLocaleString()}</p>
         {statusUpdateable ? (
           <select onChange={changeStatus} value={status}>
             {statusOptions()}
@@ -94,15 +96,21 @@ export default function Task({
         ) : (
           <p>{status} </p>
         )}
-        {taskEditable && <button onClick={onTaskEdit}>Edit Task</button>}
+        {taskEditable && <button onClick={toggleEditModal}>Edit Task</button>}
         {taskDeletable && <button onClick={onTaskDelete}>Delete Task</button>}
       </li>
-      {editTask && (
-        <Modal>
+      {editTaskModal && (
+        <Modal modalOpen={editTaskModal} setModalOpen={setEditTaskModal}>
           <EditTask
-            task={task}
-            statusList={statusArr}
-            setEditTask={setEditTask}
+            title={task.title}
+            description={task.description}
+            status={task.status}
+            deadline={task.deadline}
+            projectId={projectId}
+            setTasks={setTasks}
+            taskId={task._id}
+            closeModal={toggleEditModal}
+            editTask={true}
           />
         </Modal>
       )}

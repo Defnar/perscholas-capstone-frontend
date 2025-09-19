@@ -27,5 +27,9 @@ export default function Modal({ children, modalOpen, setModalOpen }) {
     };
   }, [modalOpen, setModalOpen]);
 
-  return <>{modalOpen && <div ref={modalRef}>{children}</div>}</>;
+  return (
+    <>
+      <div ref={modalRef}>{children}</div>
+    </>
+  );
 }
