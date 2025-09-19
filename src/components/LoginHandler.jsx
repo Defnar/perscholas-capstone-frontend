@@ -47,10 +47,16 @@ export default function LoginHandler({ closeModal }) {
     if (loginData.email === "" || loginData.password === "") return; //set up toastify response here
 
     try {
-      const response = await api.post("users/login", {
-        email: loginData.email,
-        password: loginData.password,
-      });
+      const response = await api.post(
+        "users/login",
+        {
+          email: loginData.email,
+          password: loginData.password,
+        },
+        {
+          withCredentials: true,
+        }
+      );
 
       const { token, user } = response.data;
 

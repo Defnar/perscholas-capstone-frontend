@@ -1,11 +1,7 @@
 import { useEffect, useRef } from "react";
 
-export default function Dropdown({ options, onSelect, openDropdown, setOpen }) {
+export default function Dropdown({ options, onSelect, setOpen }) {
   const dropdownRef = useRef(null);
-
-  useEffect(() => {
-    setOpen(openDropdown);
-  }, [openDropdown, setOpen]);
 
   useEffect(() => {
     const handleOutsideClick = (event) => {

@@ -3,12 +3,14 @@ import AuthContext from "./AuthContext";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
-//implementing refresh token system was a pain. this took so long to work out.  
+//implementing refresh token system was a pain. this took so long to work out.
 
 export default function AppProviders({ children }) {
   const [token, setToken] = useState(null);
   const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(true); 
+  const [loading, setLoading] = useState(true);
+
+  console.log(user, token);
 
   //earlier way to handle refreshing.  Tried swapping to state, broke the app (:
   const attemptedRefreshRef = useRef(false);
@@ -57,6 +59,8 @@ export default function AppProviders({ children }) {
         ) {
           try {
             attemptedRefreshRef.current = true;
+            if (refreshing) return;
+            const refreshing = true;
             const refreshResponse = await apiRefreshRef.current.get(
               "refreshToken",
               {
@@ -64,8 +68,6 @@ export default function AppProviders({ children }) {
               }
             );
             const { token: newToken, user: newUser } = refreshResponse.data;
-
-            console.log("this is being called");
 
             setToken(newToken);
             setUser(newUser);
@@ -100,6 +102,7 @@ export default function AppProviders({ children }) {
     const refreshLogin = async () => {
       attemptedRefreshRef.current = true;
       try {
+        console.log("attempting login");
         const response = await apiRefreshRef.current.get("refreshToken", {
           withCredentials: true,
         });
@@ -110,18 +113,19 @@ export default function AppProviders({ children }) {
         setUser(userData);
         attemptedRefreshRef.current = false;
 
-        setLoading(false); 
-        navigate(pathname, { replace: true }); 
+        setLoading(false);
+        navigate(pathname, { replace: true });
       } catch (err) {
         console.log(err);
         setToken(null);
         setUser(null);
         attemptedRefreshRef.current = false;
-        setLoading(false); 
+        setLoading(false);
         navigate("/", { replace: true });
       }
     };
 
+    console.log("attempted? ", attemptedRefreshRef.current);
     if (!attemptedRefreshRef.current) {
       refreshLogin();
     }
@@ -129,7 +133,7 @@ export default function AppProviders({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ token, setToken, api: apiRef.current, user, setUser}}
+      value={{ token, setToken, api: apiRef.current, user, setUser }}
     >
       {!loading && children}
     </AuthContext.Provider>

@@ -63,7 +63,14 @@ export default function SingleProjectPage() {
           <h2>{projectData.title}</h2>
           <section>{projectData.description}</section>
           <section>
-            {projectData && <Collaborators collabList={projectData.user} permissions={permissions} projectId={projectData._id}/>}
+            {projectData && (
+              <Collaborators
+                collabList={projectData.user}
+                permissions={permissions}
+                projectId={projectData._id}
+                joinRequests={projectData.joinRequests}
+              />
+            )}
           </section>
           <section>
             <p>

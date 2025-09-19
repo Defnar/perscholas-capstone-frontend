@@ -14,7 +14,7 @@ export default function Project({
   const onJoinRequest = async () => {
     try {
       const message = `${user.username} would like to join the project`;
-      const response = await api.post(`messages/project/${projectId}`, {
+      const response = await api.post(`message/projects/${projectId}`, {
         message: message,
       });
       console.log(response);
