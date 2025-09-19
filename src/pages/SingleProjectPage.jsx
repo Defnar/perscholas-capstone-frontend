@@ -40,9 +40,6 @@ export default function SingleProjectPage() {
   useEffect(() => {
     if (!user || !projectData) return;
 
-    console.log("collab list: ", projectData.user);
-    console.log("project data: ", projectData);
-
     const userObject = projectData.user.find(
       (projectUser) => projectUser.user._id == user._id
     );
@@ -66,7 +63,7 @@ export default function SingleProjectPage() {
           <h2>{projectData.title}</h2>
           <section>{projectData.description}</section>
           <section>
-            {projectData && <Collaborators collabList={projectData.user} />}
+            {projectData && <Collaborators collabList={projectData.user} permissions={permissions} projectId={projectData._id}/>}
           </section>
           <section>
             <p>
