@@ -91,7 +91,7 @@ export default function AppProviders({ children }) {
   }, []);
 
   //part of trying to get refreshing to work right and breaking race conditions.  Removing these caused token refreshing to not function.  Do I know why?  absolutely not
-  // probably something to do with double mounting, app loading before token retrieval finished, etc etc  (:
+  // probably something to do with double mounting, app loading before token retrieval finished, rerouting it forces component to reload/remount, etc etc  (:
   const navigate = useNavigate();
   const { pathname } = useLocation();
 

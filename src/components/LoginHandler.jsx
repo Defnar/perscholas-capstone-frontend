@@ -184,7 +184,7 @@ export default function LoginHandler({ closeModal }) {
     return () => {
       window.removeEventListener("message", handleMessage);
     };
-  }, [api, closeModal, setToken, setUser]);
+  }, [api, closeModal, navigate, setToken, setUser]);
 
   const handleOauth = async () => {
     window.open(

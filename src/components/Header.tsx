@@ -31,7 +31,7 @@ export default function Header() {
 
       {projectModalOpen && (
         <Modal modalOpen={projectModalOpen} setModalOpen={setProjectModalOpen}>
-          <ProjectEdit closeModal={toggleProjectModal} />
+          <ProjectEdit closeModal={toggleProjectModal} title={undefined} description={undefined} _id={undefined} status={undefined} deadline={undefined} privateProject={undefined} />
         </Modal>
       )}
       {loginModalOpen && (
