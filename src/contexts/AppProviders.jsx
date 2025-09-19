@@ -129,7 +129,7 @@ export default function AppProviders({ children }) {
 
   return (
     <AuthContext.Provider
-      value={{ token, setToken, api: apiRef.current, user, setUser }}
+      value={{ token, setToken, api: apiRef.current, user, setUser}}
     >
       {!loading && children}
     </AuthContext.Provider>

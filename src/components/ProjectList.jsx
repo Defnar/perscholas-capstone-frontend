@@ -30,8 +30,8 @@ export default function ProjectList({
   const handleClick = (projectId) => {
     if (!privateProject) return;
 
-    navigate(`/project/${projectId}`)
-  }
+    navigate(`/project/${projectId}`);
+  };
 
   return (
     <ul>
@@ -39,6 +39,7 @@ export default function ProjectList({
         data.projects.map((project) => (
           <li key={project._id} onClick={() => handleClick(project._id)}>
             <Project
+              projectId={project._id}
               title={project.title}
               owner={project.owner.username}
               description={project.description}
