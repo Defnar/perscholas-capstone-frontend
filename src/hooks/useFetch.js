@@ -6,7 +6,7 @@ const useFetch = (url, params) => {
   const [error, setError] = useState(null);
   const [data, setData] = useState(null);
 
-  const { api } = useContext(AuthContext);
+  const { api, token, user } = useContext(AuthContext);
 
   useEffect(() => {
     setError(null);
@@ -39,7 +39,7 @@ const useFetch = (url, params) => {
       ignore = true;
       setLoading(false);
     };
-  }, [api, url, params]);
+  }, [api, url, params, token, user]);
 
   return [data, loading, error];
 };

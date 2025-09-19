@@ -5,10 +5,11 @@ import Task from "../components/Task";
 import { useParams } from "react-router-dom";
 import Modal from "../components/Modal";
 import EditTask from "../components/EditTask";
+import Collaborators from "../components/Collaborators";
 
 export default function SingleProjectPage() {
   const { user } = useContext(AuthContext);
-  const [tasks, setTasks] = useState(null);
+  const [tasks, setTasks] = useState([]);
   const [taskCount, setTaskCount] = useState(null);
   const [visibleCount, setVisibleCount] = useState(null);
   const [permissions, setPermissions] = useState(null);
@@ -24,11 +25,10 @@ export default function SingleProjectPage() {
   }, [error]);
 
   useEffect(() => {
-    if (!data || !data.tasks) return
-      setTasks(data.tasks);
-      setProjectData(data);
-    }
-  , [data]);
+    if (!data || !data.tasks) return;
+    setTasks(data.tasks);
+    setProjectData(data);
+  }, [data]);
 
   useEffect(() => {
     if (!tasks) return;
@@ -40,8 +40,8 @@ export default function SingleProjectPage() {
   useEffect(() => {
     if (!user || !projectData) return;
 
-    console.log(user._id);
-    console.log(projectData);
+    console.log("collab list: ", projectData.user);
+    console.log("project data: ", projectData);
 
     const userObject = projectData.user.find(
       (projectUser) => projectUser.user._id == user._id
@@ -65,6 +65,9 @@ export default function SingleProjectPage() {
         <div>
           <h2>{data.title}</h2>
           <section>{data.description}</section>
+          <section>
+            {projectData && <Collaborators collabList={projectData.user} />}
+          </section>
           <section>
             <p>
               Showing {visibleCount} of {taskCount} task
