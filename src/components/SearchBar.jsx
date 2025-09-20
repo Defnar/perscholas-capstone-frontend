@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function SearchBar({
   privateProject,
@@ -17,6 +17,10 @@ export default function SearchBar({
     if (!privateProject) setOwnerSearch(search.owner);
 
   };
+
+  useEffect(() => {
+    if (privateProject) setOwnerSearch("");
+  }, [privateProject])
 
   const handleChange = (event) => {
     const { name, value } = event.target;

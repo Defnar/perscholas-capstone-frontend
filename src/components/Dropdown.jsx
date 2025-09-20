@@ -28,9 +28,9 @@ export default function Dropdown({ options, onSelect, setOpen }) {
   }, []);
 
   return (
-    <div ref={dropdownRef}>
+    <div ref={dropdownRef} className="absolute border border-t-white bg-white w-full ">
       {open && (
-        <ul>
+        <ul className="list-none">
           {options.map((option) => (
             <li
               key={option}

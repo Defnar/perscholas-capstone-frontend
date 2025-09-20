@@ -6,6 +6,7 @@ import ProjectEdit from "./ProjectEdit";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import Message from "./Messages";
+import { HomeIcon, PlusIcon, UserCircleIcon } from "@heroicons/react/24/solid";
 
 export default function Header() {
   const { api, user, setUser, setToken } = useContext(AuthContext);
@@ -15,7 +16,7 @@ export default function Header() {
   const [userDropdown, setUserDropdown] = useState(false);
   const [messagesModalOpen, setMessagesModalOpen] = useState(false);
 
-console.log(user);
+  console.log(user);
   const toggleLoginModal = () => {
     setLoginModalOpen((prev) => !prev);
   };
@@ -56,24 +57,45 @@ console.log(user);
     }
   };
 
+  const toggleDropDown = () => {
+    setUserDropdown((prev) => !prev);
+  };
   return (
-    <>
-      <Link to="/">Home button</Link>
-      <h1>ProTracker</h1>
-      {!user && <button onClick={toggleLoginModal}>Login/register</button>}
-      {user && <button onClick={toggleProjectModal}>New Project</button>}
-      {user && (
-        <button onClick={() => setUserDropdown(true)}>{user.username}</button>
-      )}
-      {userDropdown && (
-        <Dropdown
-          options={options}
-          onSelect={selectOption}
-          setOpen={setUserDropdown}
-        />
-      )}
+    <div className="flex flex-row items-center justify-between h-13 shadow-md bg-emerald-300 p-4">
+      <div className="flex flex-row gap-5 items-center">
+        <Link to="/">
+          <HomeIcon className="size-8" />{" "}
+        </Link>
+        <h1 className="font-bold italic text-xl">ProTracker</h1>
+      </div>
+      <div className="flex flex-row items-center gap-5">
+        {!user && <button onClick={toggleLoginModal}>Login/register</button>}
+        {user && (
+          <button onClick={toggleProjectModal}>
+            <PlusIcon className="size-8 sm:hidden" />
+            <span className="hidden sm:block">New Project</span>
+          </button>
+        )}
+        <div className="relative">
+          {user && (
+            <button
+              className="bg-emerald-400 px-2 py-1 rounded-md shadow-md flex flex-row gap-1"
+              onClick={toggleDropDown}
+            >
+              <UserCircleIcon className="size-8" />
+              {user.username}
+            </button>
+          )}
+          {userDropdown && (
+            <Dropdown
+              options={options}
+              onSelect={selectOption}
+              setOpen={setUserDropdown}
+            />
+          )}
+        </div>
+      </div>
 
-      <button>dark mode button</button>
       {messagesModalOpen && (
         <Modal
           modalOpen={messagesModalOpen}
@@ -101,6 +123,6 @@ console.log(user);
           <LoginHandler closeModal={toggleLoginModal} />
         </Modal>
       )}
-    </>
+    </div>
   );
 }
