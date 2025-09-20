@@ -23,15 +23,16 @@ export default function Project({
     }
   };
 
+  const categoryStyles = "font-semibold"
   return (
-    <div>
-      <h2>{title}</h2>
-      <p>owned by {owner}</p>
-      <p>description: {description}</p>
-      <p>status: {status}</p>
+    <div className="border border-gray-200 shadow-md">
+      <h2 className="font-bold">{title}</h2>
+      {!userProject && <p><span className={categoryStyles}>Owner: </span> {owner}</p>}
+      <p><span className={categoryStyles}>About:</span> {description}</p>
+      <p><span className={categoryStyles}>Status: </span>{status}</p>
 
       {!userProject && user && (
-        <button onClick={onJoinRequest}>Request to join project</button>
+        <button onClick={onJoinRequest} className="bg-emerald-200 px-4 py-2 rounded-md mb-2">Request to join project</button>
       )}
     </div>
   );
