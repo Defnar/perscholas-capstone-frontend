@@ -66,7 +66,7 @@ export default function Header() {
     setUserDropdown((prev) => !prev);
   };
   return (
-    <div className="flex flex-row items-center justify-between h-13 shadow-md bg-emerald-300 p-4">
+    <div className="flex flex-row items-center justify-between h-13 shadow-md bg-emerald-300 p-4 w-full">
       <div className="flex flex-row gap-5 items-center">
         <Link to="/">
           <HomeIcon className="size-8 hover:cursor-pointer hover:bg-emerald-400 rounded-md" />{" "}
@@ -88,7 +88,7 @@ export default function Header() {
               onClick={toggleDropDown}
             >
               <UserCircleIcon className="size-8" />
-              {user.username}
+              <span className="hidden sm:block">{user.username}</span>
             </button>
           )}
           {userDropdown && (
