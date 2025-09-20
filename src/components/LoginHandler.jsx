@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
+import { FaGithub } from "react-icons/fa";
 
 export default function LoginHandler({ closeModal }) {
   const { api, setToken, setUser } = useContext(AuthContext);
@@ -124,6 +125,12 @@ export default function LoginHandler({ closeModal }) {
   const handleRegistrationChange = (event) => {
     const { name, value } = event.target;
     setRegistrationData((prev) => ({ ...prev, [name]: value }));
+    if (name === "confirmPassword") {
+      setRegistrationValidation((prev) => ({
+        ...prev,
+        confirmPassword: registrationData.password === value,
+      }));
+    }
   };
 
   const handleRegistrationBlur = (event) => {
@@ -199,82 +206,125 @@ export default function LoginHandler({ closeModal }) {
     );
   };
 
+  const inputStyles = "flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100";
+  const inputDivStyles = "flex flex-row gap-2 w-100 max-w-xs md:max-w-100";
+  const badInputStyles = "text-center text-red-600";
+  const formStyles = "flex flex-col gap-3 items-center";
+  const buttonStyles = "bg-green-200 w-50 shadow-md rounded-md px-4 py-2 shrink-0"
+
   return (
-    <>
-      <button onClick={handleOauth}>Github button</button>
-      <h2>Already a member? Login here!</h2>
-      <form onSubmit={handleLoginSubmit}>
-        <label htmlFor="email">Email: </label>
-        <input
-          type="text"
-          name="email"
-          onBlur={handleLoginBlur}
-          value={loginData.email}
-          onChange={handleLoginChange}
-        />
-        {!loginValidation.email && <span>Email not a valid email</span>}
-        <label htmlFor="password">Password: </label>
-        <input
-          type="password"
-          name="password"
-          onBlur={handleLoginBlur}
-          value={loginData.password}
-          onChange={handleLoginChange}
-        />
-        {!loginValidation.password && <span>Password cannot be blank</span>}
-        <button type="submit">Log In</button>
-      </form>
-      <h2>Register here!</h2>
-      <form onSubmit={handleRegistrationSubmit}>
-        <label htmlFor="username">Username: </label>
-        <input
-          type="text"
-          name="username"
-          value={registrationData.username}
-          onChange={handleRegistrationChange}
-          onBlur={handleRegistrationBlur}
-        />
-        {!registrationValidation.username && (
-          <span>Username must be at least 6 characters long</span>
+    <div className="flex flex-col justify-center items-center content-center">
+      <button
+        onClick={handleOauth}
+        className="flex flex-row content-center bg-emerald-200 px-4 py-2 rounded-md shadow-md gap-4"
+      >
+        <FaGithub className="w-6 h-6" />
+        Login with Github
+      </button>
+      <h2 className="font-bold">Log In Here</h2>
+      <form className={formStyles} onSubmit={handleLoginSubmit}>
+        <div className={inputDivStyles}>
+          <label htmlFor="email">Email: </label>
+          <input
+            className={inputStyles}
+            type="text"
+            name="email"
+            onBlur={handleLoginBlur}
+            value={loginData.email}
+            onChange={handleLoginChange}
+          />
+        </div>
+        {!loginValidation.email && (
+          <span className={badInputStyles}>Email not a valid email</span>
         )}
-        <label htmlFor="email">Email: </label>
-        <input
-          type="text"
-          name="email"
-          value={registrationData.email}
-          onChange={handleRegistrationChange}
-          onBlur={handleRegistrationBlur}
-        />
-        {!registrationValidation.email && <span>Email not a valid email</span>}
-        <label htmlFor="password" name="password">
-          Password:{" "}
-        </label>
-        <input
-          type="text"
-          name="password"
-          value={registrationData.password}
-          onChange={handleRegistrationChange}
-          onBlur={handleRegistrationBlur}
-        />
+        <div className={inputDivStyles}>
+          <label htmlFor="password">Password: </label>
+          <input
+            className={inputStyles}
+            type="password"
+            name="password"
+            onBlur={handleLoginBlur}
+            value={loginData.password}
+            onChange={handleLoginChange}
+          />
+        </div>
+        {!loginValidation.password && (
+          <span className={badInputStyles}>Password cannot be blank</span>
+        )}
+        <button
+          className={buttonStyles}
+          type="submit"
+        >
+          Log In
+        </button>
+      </form>
+      <h2 className="font-bold">Register here!</h2>
+      <form className={formStyles} onSubmit={handleRegistrationSubmit}>
+        <div className={inputDivStyles}>
+          <label htmlFor="username">Username: </label>
+          <input
+            type="text"
+            name="username"
+            className={inputStyles}
+            value={registrationData.username}
+            onChange={handleRegistrationChange}
+            onBlur={handleRegistrationBlur}
+          />
+        </div>
+        {!registrationValidation.username && (
+          <span className={badInputStyles}>
+            Username must be at least 6 characters long
+          </span>
+        )}
+        <div className={inputDivStyles}>
+          <label htmlFor="email">Email: </label>
+          <input
+            type="text"
+            name="email"
+            className={inputStyles}
+            value={registrationData.email}
+            onChange={handleRegistrationChange}
+            onBlur={handleRegistrationBlur}
+          />
+        </div>
+        {!registrationValidation.email && (
+          <span className={badInputStyles}>Email not a valid email</span>
+        )}
+        <div className={inputDivStyles}>
+          <label htmlFor="password" name="password">
+            Password:{" "}
+          </label>
+          <input
+            type="text"
+            name="password"
+            className={inputStyles}
+            value={registrationData.password}
+            onChange={handleRegistrationChange}
+            onBlur={handleRegistrationBlur}
+          />
+        </div>
         {!registrationValidation.password && (
-          <span>
+          <span className={badInputStyles}>
             Password must contain at least one capital letter, one number, and
             one special character{" "}
           </span>
         )}
-        <label htmlFor="confirmPassword">confirm password:</label>
-        <input
-          type="text"
-          name="confirmPassword"
-          value={registrationData.confirmPassword}
-          onChange={handleRegistrationChange}
-          onBlur={handleRegistrationBlur}
-        />
+        <div className={inputDivStyles}>
+          <label htmlFor="confirmPassword">confirm password:</label>
+          <input
+            type="text"
+            name="confirmPassword"
+            className={inputStyles}
+            value={registrationData.confirmPassword}
+            onChange={handleRegistrationChange}
+            onBlur={handleRegistrationBlur}
+          />
+        </div>
         {!registrationValidation.confirmPassword && (
-          <span>passwords do not match</span>
+          <span className={badInputStyles}>passwords do not match</span>
         )}
-        <button type="submit">Register</button>
+        <button type="submit" className={buttonStyles}>Register</button>
       </form>
-    </>
+    </div>
   );
 }
