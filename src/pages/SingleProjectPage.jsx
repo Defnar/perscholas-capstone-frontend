@@ -57,49 +57,69 @@ export default function SingleProjectPage() {
 
   return (
     <>
-      {!user && <h1>Unauthorized, Please Log In</h1>}
+      {!user && <h2>Unauthorized, Please Log In</h2>}
       {user && projectData && (
-        <div>
-          <h2>{projectData.title}</h2>
-          <section>{projectData.description}</section>
-          <section>
-            {projectData && (
-              <Collaborators
-                collabList={projectData.user}
-                permissions={permissions}
-                projectId={projectData._id}
-                joinRequests={projectData.joinRequests}
-              />
-            )}
-          </section>
-          <section>
-            <p>
-              Showing {visibleCount} of {taskCount} task
-              {taskCount !== 1 ? "s" : ""}
-            </p>
-            {permissions && permissions.includes("addTask") && (
-              <button onClick={toggleTaskModal}>Add New Task</button>
-            )}
-            <ul>
-              {tasks &&
-                permissions &&
-                tasks
-                  .slice(0, visibleCount)
-                  .map((task) => (
-                    <Task
-                      key={task._id}
-                      projectId={projectId}
-                      task={task}
-                      permissions={permissions}
-                      taskList={tasks}
-                      setTasks={setTasks}
-                    />
-                  ))}
-            </ul>
-            <button onClick={showMoreTasks} type="button">
-              Show more tasks
-            </button>
-          </section>
+        <div className="flex flex-row gap-4">
+          <div className="flex flex-col basis-2/3 gap-4">
+            <div className="border border-gray-200 shadow-md p-4 rounded-lg bg-white">
+              <h2 className="text-4xl font-bold mb-2">{projectData.title}</h2>
+              <section>
+                <span className="font-semibold">About:</span>{" "}
+                {projectData.description}
+              </section>
+            </div>
+
+            {/* Task list */}
+            <div className="border border-gray-200 shadow-md p-4 rounded-lg bg-white">
+              <p className="mb-2">
+                Showing {visibleCount} of {taskCount} task
+                {taskCount !== 1 ? "s" : ""}
+              </p>
+              {permissions && permissions.includes("addTask") && (
+                <button
+                  onClick={toggleTaskModal}
+                  className="px-3 py-1 mb-4 bg-emerald-200 rounded"
+                >
+                  Add New Task
+                </button>
+              )}
+              <ul className="space-y-2">
+                {tasks &&
+                  permissions &&
+                  tasks
+                    .slice(0, visibleCount)
+                    .map((task) => (
+                      <Task
+                        key={task._id}
+                        projectId={projectId}
+                        task={task}
+                        permissions={permissions}
+                        taskList={tasks}
+                        setTasks={setTasks}
+                      />
+                    ))}
+              </ul>
+              {visibleCount < taskCount && (
+                <button
+                  onClick={showMoreTasks}
+                  type="button"
+                  className="mt-4 px-3 py-1 bg-gray-200 rounded hover:bg-gray-300"
+                >
+                  Show more tasks
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="basis-1/3 border border-gray-200 shadow-md p-4 rounded-lg bg-white">
+            <h3 className="text-2xl font-bold mb-2">Collaborators</h3>
+            <Collaborators
+              collabList={projectData.user}
+              permissions={permissions}
+              projectId={projectData._id}
+              joinRequests={projectData.joinRequests}
+            />
+          </div>
         </div>
       )}
 
