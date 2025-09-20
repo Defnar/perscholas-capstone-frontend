@@ -120,6 +120,16 @@ export default function SingleProjectPage() {
           </div>
         </div>
       )}
+
+      {taskModalOpen && (
+        <Modal modalOpen={taskModalOpen} setModalOpen={setTaskModalOpen}>
+          <EditTask
+            closeModal={toggleTaskModal}
+            projectId={projectId}
+            setTasks={setTasks}
+          />
+        </Modal>
+      )}
     </>
   );
 }
