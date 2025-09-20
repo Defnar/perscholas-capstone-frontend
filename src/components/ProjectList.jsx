@@ -8,13 +8,15 @@ export default function ProjectList({ privateProject = false, title, owner }) {
   const [sortOrder, setSortOrder] = useState(1);
   const [pageSize, setPageSize] = useState(5);
   const [page, setPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(0);
+  const [totalPages, setTotalPages] = useState(1);
 
   const url = useMemo(
     () => `projects/${privateProject ? "private" : ""}`,
     [privateProject]
   );
 
+  console.log("page: ", page)
+  console.log("total pages: ", totalPages)
   //tracks params and changes them as they changed
   const params = useMemo(
     () => ({
@@ -41,12 +43,26 @@ export default function ProjectList({ privateProject = false, title, owner }) {
   };
 
   useEffect(() => {
-    console.log(data);
-    if (data && data.total) setTotalPages(Math.ceil(Number(data.total) / pageSize));
+    if (data && data.total)
+      setTotalPages(Math.ceil(Number(data.total) / pageSize));
+    console.log("data: ", data)
   }, [data, pageSize]);
+
+  const handleSortByChange = (event) => {
+    setSortBy(event.target.value);
+  };
+
+  useEffect(() => {
+    setPage(Math.min(Math.max(page, 1), totalPages));
+  }, [totalPages]);
 
   return (
     <>
+      <select value={sortBy} onChange={handleSortByChange}>
+        <option value="title">Title</option>
+        {!privateProject && <option value="owner">Owner</option>}
+      </select>
+      {data?.projects.length === 0 && <p>No Projects found</p>}
       <ul>
         {data &&
           data.projects.map((project) => (
