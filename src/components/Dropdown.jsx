@@ -28,11 +28,11 @@ export default function Dropdown({ options, onSelect, setOpen }) {
   }, []);
 
   return (
-    <div ref={dropdownRef} className="absolute border bg-white w-full ">
+    <div ref={dropdownRef} className="absolute border bg-white w-full">
       {open && (
         <ul className="list-none">
           {options.map((option) => (
-            <li
+            <li className="hover:bg-green-200 hover:cursor-pointer"
               key={option}
               value={option}
               onClick={() => {

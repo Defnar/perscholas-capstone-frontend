@@ -209,13 +209,13 @@ export default function LoginHandler({ closeModal }) {
   const inputDivStyles = "flex flex-row gap-2 w-100 max-w-xs md:max-w-100";
   const badInputStyles = "text-center text-red-600";
   const formStyles = "flex flex-col gap-3 items-center";
-  const buttonStyles = "bg-green-200 w-50 shadow-md rounded-md px-4 py-2 shrink-0"
+  const buttonStyles = "bg-emerald-200 w-50 shadow-md rounded-md px-4 py-2 shrink-0 hover:bg-emerald-300 hover:cursor-pointer"
 
   return (
     <div className="flex flex-col justify-center items-center content-center">
       <button
         onClick={handleOauth}
-        className="flex flex-row content-center bg-emerald-200 px-4 py-2 rounded-md shadow-md gap-4"
+        className="flex flex-row content-center bg-emerald-200 px-4 py-2 rounded-md shadow-md gap-4 hover:bg-emerald-300 hover:cursor-pointer"
       >
         <FaGithub className="w-6 h-6" />
         Login with Github

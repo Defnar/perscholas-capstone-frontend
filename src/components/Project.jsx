@@ -32,7 +32,7 @@ export default function Project({
       <p><span className={categoryStyles}>Status: </span>{status}</p>
 
       {!userProject && user && (
-        <button onClick={onJoinRequest} className="bg-emerald-200 px-4 py-2 rounded-md mb-2">Request to join project</button>
+        <button onClick={onJoinRequest} className="bg-emerald-200 px-4 py-2 rounded-md mb-2 hover:bg-emerald-300 hover:cursor-pointer">Request to join project</button>
       )}
     </div>
   );

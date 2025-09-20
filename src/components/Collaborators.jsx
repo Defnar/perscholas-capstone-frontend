@@ -183,7 +183,7 @@ export default function Collaborators({
             {collaborators.length}
           </p>
           <button
-            className="bg-gray-200 px-4 py-2 rounded-md shadow-md hover:bg-gray-300"
+            className="bg-gray-200 px-4 py-2 rounded-md shadow-md hover:bg-gray-300 hover:cursor-pointer"
             onClick={toggleModal}
           >
             Show all
@@ -192,7 +192,7 @@ export default function Collaborators({
       )}
       {!sidebar && (
         <button
-          className="bg-gray-200 px-4 py-2 w-full rounded-md shadow-md hover:bg-gray-300"
+          className="bg-gray-200 px-4 py-2 w-full rounded-md shadow-md hover:bg-gray-300 hover:cursor-pointer"
           onClick={closeSidebar}
         >
           Close

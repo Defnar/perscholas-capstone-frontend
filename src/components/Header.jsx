@@ -69,14 +69,14 @@ export default function Header() {
     <div className="flex flex-row items-center justify-between h-13 shadow-md bg-emerald-300 p-4">
       <div className="flex flex-row gap-5 items-center">
         <Link to="/">
-          <HomeIcon className="size-8" />{" "}
+          <HomeIcon className="size-8 hover:cursor-pointer hover:bg-emerald-400 rounded-md" />{" "}
         </Link>
         <h1 className="font-bold italic text-xl">ProTracker</h1>
       </div>
-      <div className="flex flex-row items-center gap-5">
-        {!user && <button onClick={toggleLoginModal}>Login/register</button>}
+      <div className="flex flex-row items-center gap-5 ">
+        {!user && <button className="hover:cursor-pointer hover:bg-emerald-400 px-4 py-2 rounded-md" onClick={toggleLoginModal}>Login/register</button>}
         {user && (
-          <button onClick={toggleProjectModal}>
+          <button className="hover:cursor-pointer hover:bg-emerald-400 px-4 py-2 rounded-md" onClick={toggleProjectModal}>
             <PlusIcon className="size-8 sm:hidden" />
             <span className="hidden sm:block">New Project</span>
           </button>
@@ -84,7 +84,7 @@ export default function Header() {
         <div className="relative">
           {user && (
             <button
-              className="bg-emerald-400 px-2 py-1 rounded-md shadow-md flex flex-row gap-1"
+              className="bg-emerald-400 px-2 py-1 rounded-md shadow-md flex flex-row gap-1 hover:cursor-pointer hover:bg-emerald-500"
               onClick={toggleDropDown}
             >
               <UserCircleIcon className="size-8" />

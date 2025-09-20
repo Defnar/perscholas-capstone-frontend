@@ -87,7 +87,7 @@ export default function SingleProjectPage() {
             {permissions && permissions.includes("addTask") && (
               <button
                 onClick={toggleTaskModal}
-                className="px-3 py-1 mb-4 bg-emerald-200 rounded"
+                className="px-3 py-1 mb-4 bg-emerald-200 rounded hover:bg-emerald-300 hover:cursor-pointer"
               >
                 Add New Task
               </button>
