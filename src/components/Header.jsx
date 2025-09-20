@@ -44,9 +44,10 @@ export default function Header() {
     }
   };
 
+  //close modal on login
   useEffect(() => {
     setLoginModalOpen(false);
-  }, [user])
+  }, [user]);
 
   const options = ["messages", "logout"];
 

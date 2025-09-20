@@ -186,7 +186,6 @@ export default function LoginHandler({ closeModal }) {
         setToken(token);
         setUser(user);
         navigate("/");
-        closeModal();
       } catch (err) {
         console.log(err);
       }
