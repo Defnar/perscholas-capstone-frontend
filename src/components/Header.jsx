@@ -95,7 +95,6 @@ export default function Header() {
           )}
         </div>
       </div>
-
       {messagesModalOpen && (
         <Modal
           modalOpen={messagesModalOpen}

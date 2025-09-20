@@ -28,8 +28,13 @@ export default function Modal({ children, modalOpen, setModalOpen }) {
   }, [modalOpen, setModalOpen]);
 
   return (
-    <>
-      <div ref={modalRef}>{children}</div>
-    </>
+    <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
+      <div
+        ref={modalRef}
+        className="bg-white opacity-100 p-6 rounded-lg shadow-lg max-w-lg w-full"
+      >
+        {children}
+      </div>
+    </div>
   );
 }
