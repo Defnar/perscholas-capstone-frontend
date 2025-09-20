@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
+import { Bounce, toast } from "react-toastify";
 
 export default function JoinRequests({
   messages,
@@ -26,23 +27,67 @@ export default function JoinRequests({
       setMessageList((prev) =>
         prev.filter((message) => message._id !== messageId)
       );
+
+      toast(`User successfully added to project`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (err) {
       console.log(err);
+      toast(`failed to add user to project`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
   const rejectMessage = async (messageId) => {
     try {
-      const response = await api.put(`projces/${projectId}/reject`, {
+      await api.put(`projces/${projectId}/reject`, {
         messageId: messageId,
       });
 
-      console.log(response);
+      toast(`successfully rejected user`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       setMessageList((prev) =>
         prev.filter((message) => message._id !== messageId)
       );
     } catch (err) {
       console.log(err);
+      toast(`failed to reject user from project`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 

@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
+import { Bounce, toast } from "react-toastify";
 
 export default function LoginHandler({ closeModal }) {
   const { api, setToken, setUser } = useContext(AuthContext);
@@ -45,7 +46,21 @@ export default function LoginHandler({ closeModal }) {
   const handleLoginSubmit = async (event) => {
     event.preventDefault();
 
-    if (loginData.email === "" || loginData.password === "") return; //set up toastify response here
+    if (loginData.email === "" || loginData.password === "") {
+      toast(`Please enter an email and password`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
+      return;
+    }
 
     try {
       const response = await api.post(
@@ -68,9 +83,32 @@ export default function LoginHandler({ closeModal }) {
         email: "",
       });
 
+      toast(`Successfully logged in`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       closeModal();
     } catch (err) {
       console.log(err.message);
+      toast(`Failed to log in, check email and password`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
@@ -99,14 +137,66 @@ export default function LoginHandler({ closeModal }) {
       registrationData.password.length < 8 ||
       registrationData.confirmPassword.length < 8 ||
       registrationData.username.length < 6
-    )
-      return; //toastify here
+    ) {
+      toast(`Please ensure all fields are filled out properly`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
 
-    if (!emailRegex.test(registrationData.email)) return; //toastify here
+      return;
+    }
 
-    if (!passwordRegex.test(registrationData.password)) return; //toastify
+    if (!emailRegex.test(registrationData.email)) {
+      toast(`Not a valid email`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
 
-    if (!registrationData.password === registrationData.confirmPassword) return; //toastify
+    if (!passwordRegex.test(registrationData.password)) {
+      toast(`Not a valid password: 1 Capital, 1 Number, 1 Symbol required`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    }
+
+    if (!registrationData.password === registrationData.confirmPassword) {
+      toast(`Passwords do not match`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+      return;
+    } 
 
     try {
       const response = await api.post(`users/register`, {
@@ -116,9 +206,32 @@ export default function LoginHandler({ closeModal }) {
       });
       console.log(response);
 
+      toast(`User successfully registered, Please log in`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
       closeModal();
     } catch (err) {
       console.log(err);
+      toast(`${err.response.data.message}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
@@ -185,7 +298,6 @@ export default function LoginHandler({ closeModal }) {
 
         setToken(token);
         setUser(user);
-        navigate("/");
       } catch (err) {
         console.log(err);
       }
@@ -205,11 +317,13 @@ export default function LoginHandler({ closeModal }) {
     );
   };
 
-  const inputStyles = "flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100 px-2";
+  const inputStyles =
+    "flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100 px-2";
   const inputDivStyles = "flex flex-row gap-2 w-100 max-w-xs md:max-w-100";
   const badInputStyles = "text-center text-red-600";
   const formStyles = "flex flex-col gap-3 items-center";
-  const buttonStyles = "bg-emerald-200 w-50 shadow-md rounded-md px-4 py-2 shrink-0 hover:bg-emerald-300 hover:cursor-pointer"
+  const buttonStyles =
+    "bg-emerald-200 w-50 shadow-md rounded-md px-4 py-2 shrink-0 hover:bg-emerald-300 hover:cursor-pointer";
 
   return (
     <div className="flex flex-col justify-center items-center content-center">
@@ -250,10 +364,7 @@ export default function LoginHandler({ closeModal }) {
         {!loginValidation.password && (
           <span className={badInputStyles}>Password cannot be blank</span>
         )}
-        <button
-          className={buttonStyles}
-          type="submit"
-        >
+        <button className={buttonStyles} type="submit">
           Log In
         </button>
       </form>
@@ -322,7 +433,9 @@ export default function LoginHandler({ closeModal }) {
         {!registrationValidation.confirmPassword && (
           <span className={badInputStyles}>passwords do not match</span>
         )}
-        <button type="submit" className={buttonStyles}>Register</button>
+        <button type="submit" className={buttonStyles}>
+          Register
+        </button>
       </form>
     </div>
   );

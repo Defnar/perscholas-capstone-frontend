@@ -1,6 +1,8 @@
 import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import useFetch from "../hooks/useFetch";
+import LoaderSpinner from "./LoaderSpinner";
+import { Bounce, toast } from "react-toastify";
 
 export default function Message() {
   const { api } = useContext(AuthContext);
@@ -14,6 +16,17 @@ export default function Message() {
       console.log(response);
     } catch (err) {
       console.log(err);
+      toast(`failed to load messages`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
@@ -27,9 +40,10 @@ export default function Message() {
     }
   };
 
-
   return (
     <>
+      {loading && <LoaderSpinner />}
+      {error && <p>Failed with the following error: ${error.message}</p>}
       {!data || (data && data.length === 0) ? (
         <p>No messages found</p>
       ) : (
@@ -43,10 +57,16 @@ export default function Message() {
               >
                 {message.message}{" "}
                 <div className="flex flex-row justify-between">
-                  <button className="px-4 py-2 bg-emerald-200 rounded-md shadow-md hover:bg-emerald-300 hover:cursor-pointer" onClick={() => acceptMessage(message._id)}>
+                  <button
+                    className="px-4 py-2 bg-emerald-200 rounded-md shadow-md hover:bg-emerald-300 hover:cursor-pointer"
+                    onClick={() => acceptMessage(message._id)}
+                  >
                     accept
                   </button>
-                  <button className="px-4 py-2 bg-red-200 rounded-md shadow-md hover:bg-red-300 hover:cursor-pointer" onClick={() => rejectMessage(message._id)}>
+                  <button
+                    className="px-4 py-2 bg-red-200 rounded-md shadow-md hover:bg-red-300 hover:cursor-pointer"
+                    onClick={() => rejectMessage(message._id)}
+                  >
                     reject
                   </button>
                 </div>

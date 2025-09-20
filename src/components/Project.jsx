@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
+import { Bounce, toast } from "react-toastify";
 
 export default function Project({
   projectId,
@@ -14,25 +15,60 @@ export default function Project({
   const onJoinRequest = async () => {
     try {
       const message = `${user.username} would like to join the project`;
-      const response = await api.post(`message/projects/${projectId}`, {
+      await api.post(`message/projects/${projectId}`, {
         message: message,
       });
-      console.log(response);
+      toast(`Please enter an email and password`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (err) {
       console.log(err);
+      toast(`failed to send request: ${err.response.data.error}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
-  const categoryStyles = "font-semibold"
+  const categoryStyles = "font-semibold";
   return (
     <div className="border border-gray-200 shadow-md p-2">
       <h2 className="font-bold">{title}</h2>
-      {!userProject && <p><span className={categoryStyles}>Owner: </span> {owner}</p>}
-      <p><span className={categoryStyles}>About:</span> {description}</p>
-      <p><span className={categoryStyles}>Status: </span>{status}</p>
+      {!userProject && (
+        <p>
+          <span className={categoryStyles}>Owner: </span> {owner}
+        </p>
+      )}
+      <p>
+        <span className={categoryStyles}>About:</span> {description}
+      </p>
+      <p>
+        <span className={categoryStyles}>Status: </span>
+        {status}
+      </p>
 
       {!userProject && user && (
-        <button onClick={onJoinRequest} className="bg-emerald-200 px-4 py-2 rounded-md mb-2 hover:bg-emerald-300 hover:cursor-pointer">Request to join project</button>
+        <button
+          onClick={onJoinRequest}
+          className="bg-emerald-200 px-4 py-2 rounded-md mb-2 hover:bg-emerald-300 hover:cursor-pointer"
+        >
+          Request to join project
+        </button>
       )}
     </div>
   );

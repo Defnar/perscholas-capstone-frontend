@@ -1,5 +1,6 @@
 import { useContext, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
+import { Bounce, toast } from "react-toastify";
 
 export default function EditTask({
   title,
@@ -57,7 +58,17 @@ export default function EditTask({
             status: taskInfo.status,
           });
 
-      console.log(response.data); //toastify
+      toast(`Task successfully edited`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
 
       if (taskId) {
         setTasks((prev) =>
@@ -74,6 +85,17 @@ export default function EditTask({
       closeModal();
     } catch (err) {
       console.log(err);
+      toast(`editing task failed, see logs for more information`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 

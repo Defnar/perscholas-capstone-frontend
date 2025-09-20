@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import Modal from "./Modal";
 import EditTask from "./EditTask";
+import { Bounce, toast } from "react-toastify";
 
 export default function Task({
   projectId,
@@ -64,6 +65,17 @@ export default function Task({
       );
     } catch (err) {
       console.log(err);
+      toast(`Error updating status`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
@@ -74,8 +86,30 @@ export default function Task({
       );
 
       setTasks((prev) => prev.filter((oldTask) => oldTask._id !== task._id));
+      toast(`Task successfully deleted`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (err) {
       console.log(err);
+      toast(`Error occurred deleting task`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 

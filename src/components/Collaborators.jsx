@@ -3,6 +3,7 @@ import Modal from "./Modal";
 import Dropdown from "./Dropdown";
 import AuthContext from "../contexts/AuthContext";
 import JoinRequests from "./JoinRequests";
+import { Bounce, toast } from "react-toastify";
 
 export default function Collaborators({
   collabList,
@@ -62,6 +63,17 @@ export default function Collaborators({
       setInviteList(response.data || []);
     } catch (err) {
       console.log(err);
+      toast(`${err}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
@@ -69,7 +81,17 @@ export default function Collaborators({
     try {
       await api.post(`projects/${projectId}/invite`, { userId });
     } catch (err) {
-      console.log(err);
+      toast(`${err.response.data.error}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
@@ -97,16 +119,19 @@ export default function Collaborators({
                 </button>
               </div>
               {inviteList.length === 0 && <p>No users found</p>}
-                <ul className="space-y-1 mb-2">
-                  {inviteList.map((iUser) => (
-                    <li key={iUser._id}>
-                      {iUser.username}{" "}
-                      <button className="px-4 bg-emerald-200 rounded-md shadow-md hover:bg-emerald-300 hover:cursor-pointer" onClick={() => inviteUserById(iUser._id)}>
-                        Invite
-                      </button>
-                    </li>
-                  ))}
-                </ul>
+              <ul className="space-y-1 mb-2">
+                {inviteList.map((iUser) => (
+                  <li key={iUser._id}>
+                    {iUser.username}{" "}
+                    <button
+                      className="px-4 bg-emerald-200 rounded-md shadow-md hover:bg-emerald-300 hover:cursor-pointer"
+                      onClick={() => inviteUserById(iUser._id)}
+                    >
+                      Invite
+                    </button>
+                  </li>
+                ))}
+              </ul>
               <button
                 type="button"
                 className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md shadow-md"

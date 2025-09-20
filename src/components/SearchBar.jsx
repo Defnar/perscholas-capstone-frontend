@@ -58,7 +58,7 @@ export default function SearchBar({
             />
           </div>
         )}
-        <button type="submit" className="bg-emerald-200 rounded-md shadow-md px-4 hover:bg-emerald-300 hover:cursor-pointer">Search</button>
+        <button type="submit" className="bg-emerald-200 rounded-md shadow-md px-4 w-30 hover:bg-emerald-300 hover:cursor-pointer">Search</button>
       </form>
     </div>
   );

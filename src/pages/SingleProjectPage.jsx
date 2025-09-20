@@ -7,6 +7,7 @@ import Modal from "../components/Modal";
 import EditTask from "../components/EditTask";
 import Collaborators from "../components/Collaborators";
 import ProjectEdit from "../components/ProjectEdit";
+import LoaderSpinner from "../components/LoaderSpinner";
 
 export default function SingleProjectPage() {
   const { user } = useContext(AuthContext);
@@ -63,6 +64,7 @@ export default function SingleProjectPage() {
   return (
     <>
       {!user && <h2>Unauthorized, Please Log In</h2>}
+      {loading && <LoaderSpinner />}
       {user && projectData && (
         <div className="flex flex-col gap-4 h-screen p-2">
           <div className="flex gap-4">
@@ -72,11 +74,22 @@ export default function SingleProjectPage() {
                 <span className="font-semibold">About:</span>{" "}
                 {projectData.description}
               </p>
-              <p><span className="font-semibold">Status: </span>{projectData.status}</p>
-              {projectData?.deadline && <p><span className="font-semibold">Deadline: </span>{new Date(projectData.deadline).toLocaleString()}</p>}
+              <p>
+                <span className="font-semibold">Status: </span>
+                {projectData.status}
+              </p>
+              {projectData?.deadline && (
+                <p>
+                  <span className="font-semibold">Deadline: </span>
+                  {new Date(projectData.deadline).toLocaleString()}
+                </p>
+              )}
               <div className="flex flex-1 h-full w-full">
                 {permissions?.includes("editProject") && (
-                  <button className="self-end bg-emerald-200 px-4 py-2 rounded-md shadow-md hover:bg-emerald-300 hover:cursor-pointer" onClick={toggleProjectModal}>
+                  <button
+                    className="self-end bg-emerald-200 px-4 py-2 rounded-md shadow-md hover:bg-emerald-300 hover:cursor-pointer"
+                    onClick={toggleProjectModal}
+                  >
                     Edit
                   </button>
                 )}

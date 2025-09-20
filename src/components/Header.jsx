@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import Message from "./Messages";
 import { HomeIcon, PlusIcon, UserCircleIcon } from "@heroicons/react/24/solid";
+import { Bounce, toast } from "react-toastify";
 
 export default function Header() {
   const { api, user, setUser, setToken } = useContext(AuthContext);
@@ -16,7 +17,6 @@ export default function Header() {
   const [userDropdown, setUserDropdown] = useState(false);
   const [messagesModalOpen, setMessagesModalOpen] = useState(false);
 
-  console.log(user);
   const toggleLoginModal = () => {
     setLoginModalOpen((prev) => !prev);
   };
@@ -39,7 +39,29 @@ export default function Header() {
       setToken(null);
 
       console.log(response);
+      toast(`successfully logged out`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     } catch (err) {
+      toast(`logout failed, see console for more information`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
       console.log(err);
     }
   };

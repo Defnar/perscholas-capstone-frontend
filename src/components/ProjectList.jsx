@@ -2,6 +2,8 @@ import { useMemo, useState, useEffect } from "react";
 import useFetch from "../hooks/useFetch";
 import Project from "./Project";
 import { useNavigate } from "react-router-dom";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
+import LoaderSpinner from "./LoaderSpinner";
 
 export default function ProjectList({ privateProject = false, title, owner }) {
   const [sortBy, setSortBy] = useState("title");
@@ -15,8 +17,8 @@ export default function ProjectList({ privateProject = false, title, owner }) {
     [privateProject]
   );
 
-  console.log("page: ", page)
-  console.log("total pages: ", totalPages)
+  console.log("page: ", page);
+  console.log("total pages: ", totalPages);
   //tracks params and changes them as they changed
   const params = useMemo(
     () => ({
@@ -32,8 +34,6 @@ export default function ProjectList({ privateProject = false, title, owner }) {
     [title, owner, sortBy, sortOrder, pageSize, page]
   );
   const [data, loading, error] = useFetch(url, params);
-  console.log(loading);
-  console.log(error);
 
   const navigate = useNavigate();
   const handleClick = (projectId) => {
@@ -45,11 +45,15 @@ export default function ProjectList({ privateProject = false, title, owner }) {
   useEffect(() => {
     if (data && data.total)
       setTotalPages(Math.ceil(Number(data.total) / pageSize));
-    console.log("data: ", data)
+    console.log("data: ", data);
   }, [data, pageSize]);
 
   const handleSortByChange = (event) => {
     setSortBy(event.target.value);
+  };
+
+  const handleSortOrderChange = (event) => {
+    setSortOrder(Number(event.target.value));
   };
 
   useEffect(() => {
@@ -58,11 +62,29 @@ export default function ProjectList({ privateProject = false, title, owner }) {
 
   return (
     <>
-      <select value={sortBy} onChange={handleSortByChange}>
-        <option value="title">Title</option>
-        {!privateProject && <option value="owner">Owner</option>}
-      </select>
+      <div>
+        <div className="flex flex-row">
+          <label htmlFor="sortBy">Sort By: </label>
+          <select value={sortBy} name="sortBy" onChange={handleSortByChange}>
+            <option value="title">Title</option>
+            {!privateProject && <option value="owner">Owner</option>}
+          </select>
+        </div>
+        <div className="flex flex-row">
+          <label htmlFor="sortOrder">Sort Order: </label>
+          <select
+            value={sortOrder}
+            name="sortOrder"
+            onChange={handleSortOrderChange}
+          >
+            <option value={1}>Ascending</option>
+            <option value={-1}>Descending</option>
+          </select>
+        </div>
+      </div>
+      {loading && <LoaderSpinner />}
       {data?.projects.length === 0 && <p>No Projects found</p>}
+      {error && <p>Failed to retrieve project list with error: {error}</p>}
       <ul>
         {data &&
           data.projects.map((project) => (
@@ -79,18 +101,23 @@ export default function ProjectList({ privateProject = false, title, owner }) {
           ))}
       </ul>
       <section>
-        {page > 1 && (
-          <button onClick={() => setPage((prev) => prev - 1)}>Jump Left</button>
-        )}
-        Page {page} of {totalPages}{" "}
-        {page < totalPages && (
-          <button onClick={() => setPage((prev) => prev + 1)}>
-            Jump Right
-          </button>
-        )}
-        <div>
+        <div className="flex flex-row items-center">
+          {page > 1 && (
+            <button onClick={() => setPage((prev) => prev - 1)}>
+              <ChevronLeftIcon className="size-6" />
+            </button>
+          )}
+          Page {page} of {totalPages}{" "}
+          {page < totalPages && (
+            <button onClick={() => setPage((prev) => prev + 1)}>
+              <ChevronRightIcon className="size-6" />
+            </button>
+          )}
+        </div>
+        <div className="flex flex-row">
           {Array.from({ length: totalPages }, (_, i) => i + 1).map((num) => (
             <button
+              className="px-2 hover:bg-emerald-300 rounded-md text-center hover:cursor-pointer"
               key={num}
               onClick={() => setPage(num)}
               disabled={num === page}
