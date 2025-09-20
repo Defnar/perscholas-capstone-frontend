@@ -33,7 +33,7 @@ export default function SingleProjectPage() {
   useEffect(() => {
     if (!tasks) return;
     setTaskCount(tasks.length || 0);
-    setVisibleCount(Math.min(tasks.length, 10) || 0);
+    setVisibleCount(Math.min(tasks.length, 5) || 0);
   }, [tasks]);
 
   //checks project list, finds user and assigns permissions
@@ -79,7 +79,7 @@ export default function SingleProjectPage() {
             </div>
           </div>
 
-          <div className="flex-1 border border-gray-200 shadow-md p-4 rounded-lg bg-white overflow-y-auto">
+          <div className="flex-1 border border-gray-200 shadow-md p-4 rounded-lg bg-white">
             <p className="mb-2">
               Showing {visibleCount} of {taskCount} task
               {taskCount !== 1 ? "s" : ""}

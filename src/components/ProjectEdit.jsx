@@ -22,7 +22,6 @@ export default function ProjectEdit({
   const { api } = useContext(AuthContext);
   const [titleValidity, setTitleValidity] = useState(true);
 
-
   //list of statuses to map to options
   const statusArr = ["To Do", "In Progress", "Done", "Overdue", "Archive"];
 
@@ -43,7 +42,6 @@ export default function ProjectEdit({
     if (name === "title") setTitleValidity(value.length > 0);
   };
 
-  
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -78,61 +76,86 @@ export default function ProjectEdit({
     }
   };
 
+  const inputStyles =
+    "flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100";
+  const inputDivStyles = "flex flex-row gap-2 w-100 max-w-xs md:max-w-100";
+  const formStyles = "flex flex-col gap-3 items-center";
+
   return (
-    <form onSubmit={handleSubmit}>
-      <label htmlFor="title">title: </label>
-      <input
-        type="text"
-        name="title"
-        onChange={handleChange}
-        value={projectData.title}
-        onBlur={handleBlur}
-      />
-      {!titleValidity && <span>Title is required</span>}
-      <label htmlFor="description">description: </label>
-      <textarea
-        name="description"
-        value={projectData.description}
-        onChange={handleChange}
-      />
-      <label htmlFor="status">status: </label>
-      <select name="status" value={projectData.status} onChange={handleChange}>
-        {statusArr.map((status) => (
-          <option key={status} value={status}>
-            {status}
-          </option>
-        ))}
-      </select>
-      <label htmlFor="private">Visibility: </label>
-      <label>
+    <form className={formStyles} onSubmit={handleSubmit}>
+      <div className={inputDivStyles}>
+        <label htmlFor="title">title: </label>
         <input
-          type="radio"
-          name="private"
-          value={true}
+          className={inputStyles}
+          type="text"
+          name="title"
           onChange={handleChange}
-          checked={projectData.private ? true : undefined}
+          value={projectData.title}
+          onBlur={handleBlur}
         />
-        private
-      </label>
-      <label>
+      </div>
+      {!titleValidity && <span className="text-center text-red-600">Title is required</span>}
+      <div className={inputDivStyles}>
+        <label htmlFor="description">description: </label>
+        <textarea
+        className="flex-1 shadow-md border border-gray-200 bg-gray-100"
+          name="description"
+          value={projectData.description}
+          onChange={handleChange}
+        />
+      </div>{" "}
+      <div className={inputDivStyles}>
+        <label htmlFor="status">status: </label>
+        <select
+          className={inputStyles}
+          name="status"
+          value={projectData.status}
+          onChange={handleChange}
+        >
+          {statusArr.map((status) => (
+            <option key={status} value={status}>
+              {status}
+            </option>
+          ))}
+        </select>{" "}
+      </div>
+      <div className={inputDivStyles}>
+        <label htmlFor="private">Visibility: </label>
+        <label>
+          <input
+            type="radio"
+            name="private"
+            value={true}
+            onChange={handleChange}
+            checked={projectData.private ? true : undefined}
+          />
+          private
+        </label>
+        <label>
+          <input
+            type="radio"
+            name="private"
+            value={false}
+            onChange={handleChange}
+            check={!projectData.private ? true : undefined}
+          />
+          public
+        </label>
+      </div>{" "}
+      <div>
+        <label htmlFor="deadline">
+          Deadline(leave empty for no deadline):{" "}
+        </label>
         <input
-          type="radio"
-          name="private"
-          value={false}
+          className={inputStyles}
+          type="datetime-local"
+          name="deadline"
+          value={deadline}
           onChange={handleChange}
-          check={!projectData.private ? true : undefined}
         />
-        public
-      </label>
-      <label htmlFor="deadline">Deadline(leave empty for no deadline): </label>
-      <input
-        type="datetime-local"
-        name="deadline"
-        value={deadline}
-        onChange={handleChange}
-      />
-      <button type="submit">Submit</button>
-      <button type="button" onClick={closeModal}>
+      </div>
+      <button type="submit" className="bg-emerald-200 w-50 shadow-md rounded-md px-4 py-2 shrink-0 hover:bg-emerald-300 hover:cursor-pointer">Submit</button>
+      <button type="button" className="bg-gray-200 w-50 shadow-md rounded-md px-4 py-2 shrink-0 hover:bg-gray-300 hover:cursor-pointer" onClick={closeModal}>
         Cancel
       </button>
     </form>
