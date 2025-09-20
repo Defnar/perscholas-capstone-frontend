@@ -76,38 +76,50 @@ export default function Collaborators({
   return (
     <>
       {inviteUser && (
-        <div>
-          <form onSubmit={handleInviteSubmit}>
-            <label htmlFor="invite">Search by username: </label>
-            <input
-              type="text"
-              name="invite"
-              value={inviteInput}
-              onChange={handleInviteChange}
-            />
-            <button type="submit">Search</button>
-            {inviteList.length === 0 && <p>No users found</p>}
-            <ul>
-              {inviteList.map((iUser) => (
-                <li key={iUser._id}>
-                  {iUser.username}{" "}
-                  <button onClick={() => inviteUserById(iUser._id)}>
-                    Invite
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <button
-              type="button"
-              onClick={() => {
-                setInviteUser(false);
-                setInviteList([]);
-              }}
-            >
-              Close
-            </button>
-          </form>
-        </div>
+        <Modal modalOpen={inviteUser} setModalOpen={setInviteUser}>
+          <div className="flex flex-col">
+            <h2 className="font-bold text-center">Search For Users</h2>
+            <form onSubmit={handleInviteSubmit} className="flex flex-col gap-2">
+              <div>
+                <label htmlFor="invite">Username: </label>
+                <input
+                  className="flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100"
+                  type="text"
+                  name="invite"
+                  value={inviteInput}
+                  onChange={handleInviteChange}
+                />
+                <button
+                  className="bg-emerald-200 hover:bg-emerald-300 px-4 rounded-md shadow-md"
+                  type="submit"
+                >
+                  Search
+                </button>
+              </div>
+              {inviteList.length === 0 && <p>No users found</p>}
+                <ul className="space-y-1 mb-2">
+                  {inviteList.map((iUser) => (
+                    <li key={iUser._id}>
+                      {iUser.username}{" "}
+                      <button onClick={() => inviteUserById(iUser._id)}>
+                        Invite
+                      </button>
+                    </li>
+                  ))}
+                </ul>
+              <button
+                type="button"
+                className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md shadow-md"
+                onClick={() => {
+                  setInviteUser(false);
+                  setInviteList([]);
+                }}
+              >
+                Close
+              </button>
+            </form>
+          </div>
+        </Modal>
       )}
 
       {joinRequestModal && (
@@ -150,7 +162,7 @@ export default function Collaborators({
         </div>
       )}
 
-      <div className="overflow-y-auto px-4 py-2">
+      <div className="px-4 py-2">
         <h2 className="font-bold text-center text-lg mb-2">Collaborators</h2>
         <ul className="space-y-1 mb-2">
           {collaborators.slice(0, spliceIndex).map((collab) => (
@@ -180,7 +192,7 @@ export default function Collaborators({
       )}
       {!sidebar && (
         <button
-          className="bg-gray-200 px-4 py-2 rounded-md shadow-md hover:bg-gray-300"
+          className="bg-gray-200 px-4 py-2 w-full rounded-md shadow-md hover:bg-gray-300"
           onClick={closeSidebar}
         >
           Close
