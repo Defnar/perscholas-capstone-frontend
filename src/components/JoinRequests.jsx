@@ -1,6 +1,5 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
 
 export default function JoinRequests({
   messages,
@@ -9,37 +8,52 @@ export default function JoinRequests({
 }) {
   const { api } = useContext(AuthContext);
 
-  const navigate = useNavigate();
+  const [messageList, setMessageList] = useState(messages);
+
+  useEffect(() => {
+    setMessageList(messages);
+  }, [messages]);
 
   const acceptMessage = async (messageId) => {
-
-    console.log(messageId);
     try {
       const response = await api.put(`projects/${projectId}/accept`, {
-        messageId: messageId
-      } );
+        messageId: messageId,
+      });
 
-      const {project}= response.data;
+      const { project } = response.data;
 
-      console.log(project.user);
       setCollaborators(project.user);
+      setMessageList((prev) =>
+        prev.filter((message) => message._id !== messageId)
+      );
     } catch (err) {
       console.log(err);
     }
   };
 
   const rejectMessage = async (messageId) => {
-    console.log(messageId);
+    try {
+      const response = await api.put(`projces/${projectId}/reject`, {
+        messageId: messageId,
+      });
+
+      console.log(response);
+      setMessageList((prev) =>
+        prev.filter((message) => message._id !== messageId)
+      );
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   return (
     <div>
-      {!messages || (messages.length === 0 && <p>No messages found</p>)}
-      {messages && messages.length > 0 && (
+      {!messageList || (messageList.length === 0 && <p>No messages found</p>)}
+      {messageList && messageList.length > 0 && (
         <>
           <h2>Requests:</h2>
           <ul>
-            {messages.map((message) => (
+            {messageList.map((message) => (
               <li key={message._id}>
                 {message.message}{" "}
                 <button onClick={() => acceptMessage(message._id)}>
