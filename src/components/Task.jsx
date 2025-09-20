@@ -16,13 +16,14 @@ export default function Task({
 
   const { api } = useContext(AuthContext);
 
-  const statusUpdateable = userRole === "owner";
-  permissions.some(
-    (perm) =>
-      perm === "updateTaskStatus" ||
-      perm === "editProject" ||
-      perm === "editTask"
-  );
+  const statusUpdateable =
+    userRole === "owner" ||
+    permissions.some(
+      (perm) =>
+        perm === "updateTaskStatus" ||
+        perm === "editProject" ||
+        perm === "editTask"
+    );
 
   const taskEditable =
     userRole === "owner" ||
@@ -85,19 +86,25 @@ export default function Task({
 
   return (
     <>
-      <li>
-        <h2>{task.title}</h2>
+      <li className="border border-gray-200 rounded-md px-4 py-2 shadow-md flex flex-col gap-2">
+        <h2 className="font-bold text-3xl">{task.title}</h2>
         <p>{task.description}</p>
         <p>{task.deadline && new Date(task.deadline).toLocaleString()}</p>
         {statusUpdateable ? (
-          <select onChange={changeStatus} value={status}>
+          <select
+            onChange={changeStatus}
+            className="flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100 w-fit"
+            value={status}
+          >
             {statusOptions()}
           </select>
         ) : (
           <p>{status} </p>
         )}
-        {taskEditable && <button onClick={toggleEditModal}>Edit Task</button>}
-        {taskDeletable && <button onClick={onTaskDelete}>Delete Task</button>}
+        <div className="flex flex-row gap-5">
+          {taskEditable && <button className="bg-emerald-200 rounded-md shaodow-md px-4 py-2 hover:bg-emerald-300 hover:cursor-pointer" onClick={toggleEditModal}>Edit Task</button>}
+          {taskDeletable && <button className="bg-red-200 rounded-md shadow-md px-4 py-2 hover:bg-red-300 hover:cursor-pointer" onClick={onTaskDelete}>Delete Task</button>}
+        </div>
       </li>
       {editTaskModal && (
         <Modal modalOpen={editTaskModal} setModalOpen={setEditTaskModal}>
