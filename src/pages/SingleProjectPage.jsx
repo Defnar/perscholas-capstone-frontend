@@ -112,7 +112,6 @@ export default function SingleProjectPage() {
           </div>
 
           <div className="basis-1/3 border border-gray-200 shadow-md p-4 rounded-lg bg-white">
-            <h3 className="text-2xl font-bold mb-2">Collaborators</h3>
             <Collaborators
               collabList={projectData.user}
               permissions={permissions}

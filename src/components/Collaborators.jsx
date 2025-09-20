@@ -10,6 +10,7 @@ export default function Collaborators({
   permissions,
   projectId,
   joinRequests,
+  closeSidebar
 }) {
   const [collaborators, setCollaborators] = useState([...collabList]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -26,9 +27,13 @@ export default function Collaborators({
     setCollaborators([...collabList]);
   }, [collabList]);
 
-  const spliceIndex = useMemo(() => sidebar
-    ? Math.min(collaborators.length, visibleCount)
-    : collaborators.length, [collaborators, sidebar])
+  const spliceIndex = useMemo(
+    () =>
+      sidebar
+        ? Math.min(collaborators.length, visibleCount)
+        : collaborators.length,
+    [collaborators, sidebar]
+  );
 
   const toggleModal = () => setModalOpen((prev) => !prev);
 
@@ -118,13 +123,18 @@ export default function Collaborators({
 
       {modalOpen && (
         <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-          <Collaborators collabList={collaborators} sidebar={false} />
+          <Collaborators collabList={collaborators} sidebar={false} closeSidebar={toggleModal}/>
         </Modal>
       )}
 
       {permissions?.includes("inviteUsers") && (
-        <div>
-          <button onClick={() => setDropdown(true)}>Options</button>
+        <div className="flex flex-col mb-4">
+          <button
+            className="bg-emerald-200 rounded-md px-4 py-2 shadow-md hover:bg-emerald-300"
+            onClick={() => setDropdown(true)}
+          >
+            Add Collaborators
+          </button>
           {dropdown && (
             <Dropdown
               options={options}
@@ -136,20 +146,35 @@ export default function Collaborators({
         </div>
       )}
 
-      <h2>Collaborators</h2>
-      <ul>
+      <h2 className="font-bold text-center text-lg mb-2">Collaborators</h2>
+      <ul className="space-y-1 mb-2">
         {collaborators.slice(0, spliceIndex).map((collab) => (
-          <li key={collab.user._id}>{collab.user.username}</li>
+          <li
+            key={collab.user._id}
+            className="px-2 py-1 rounded-md hover:bg-gray-100"
+          >
+            {collab.user.username}
+          </li>
         ))}
       </ul>
 
       {sidebar && (
-        <p>
-          Showing {Math.min(visibleCount, collaborators.length)} of{" "}
-          {collaborators.length}
-        </p>
+        <>
+          <p className="italic text-sm text-gray-600 mb-2">
+            Showing {Math.min(visibleCount, collaborators.length)} of{" "}
+            {collaborators.length}
+          </p>
+          <button
+            className="bg-gray-200 px-4 py-2 rounded-md shadow-md hover:bg-gray-300"
+            onClick={toggleModal}
+          >
+            Show all
+          </button>
+        </>
       )}
-      {sidebar && <button onClick={toggleModal}>Show all</button>}
+      {!sidebar && (
+        <button className="bg-gray-200 px-4 py-2 rounded-md shadow-md hover:bg-gray-300"  onClick={closeSidebar}>Close</button>
+      )}
     </>
   );
 }
