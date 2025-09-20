@@ -31,7 +31,7 @@ export default function Modal({ children, modalOpen, setModalOpen }) {
     <div className="fixed inset-0 flex items-center justify-center bg-black/50 z-50">
       <div
         ref={modalRef}
-        className="bg-white opacity-100 p-6 rounded-lg shadow-lg max-w-lg w-full"
+        className="bg-white p-6 rounded-lg shadow-lg max-w-lg w-full max-h-lg overflow-y-auto"
       >
         {children}
       </div>

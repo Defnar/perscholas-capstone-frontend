@@ -1,4 +1,4 @@
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import Modal from "./Modal";
 import LoginHandler from "./LoginHandler";
@@ -43,6 +43,10 @@ export default function Header() {
       console.log(err);
     }
   };
+
+  useEffect(() => {
+    setLoginModalOpen(false);
+  }, [user])
 
   const options = ["messages", "logout"];
 

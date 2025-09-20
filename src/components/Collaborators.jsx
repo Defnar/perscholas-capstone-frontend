@@ -10,7 +10,7 @@ export default function Collaborators({
   permissions,
   projectId,
   joinRequests,
-  closeSidebar
+  closeSidebar,
 }) {
   const [collaborators, setCollaborators] = useState([...collabList]);
   const [modalOpen, setModalOpen] = useState(false);
@@ -123,7 +123,11 @@ export default function Collaborators({
 
       {modalOpen && (
         <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
-          <Collaborators collabList={collaborators} sidebar={false} closeSidebar={toggleModal}/>
+          <Collaborators
+            collabList={collaborators}
+            sidebar={false}
+            closeSidebar={toggleModal}
+          />
         </Modal>
       )}
 
@@ -146,17 +150,19 @@ export default function Collaborators({
         </div>
       )}
 
-      <h2 className="font-bold text-center text-lg mb-2">Collaborators</h2>
-      <ul className="space-y-1 mb-2">
-        {collaborators.slice(0, spliceIndex).map((collab) => (
-          <li
-            key={collab.user._id}
-            className="px-2 py-1 rounded-md hover:bg-gray-100"
-          >
-            {collab.user.username}
-          </li>
-        ))}
-      </ul>
+      <div className="overflow-y-auto px-4 py-2">
+        <h2 className="font-bold text-center text-lg mb-2">Collaborators</h2>
+        <ul className="space-y-1 mb-2">
+          {collaborators.slice(0, spliceIndex).map((collab) => (
+            <li
+              key={collab.user._id}
+              className="px-2 py-1 rounded-md hover:bg-gray-100"
+            >
+              {collab.user.username}
+            </li>
+          ))}
+        </ul>
+      </div>
 
       {sidebar && (
         <>
@@ -173,7 +179,12 @@ export default function Collaborators({
         </>
       )}
       {!sidebar && (
-        <button className="bg-gray-200 px-4 py-2 rounded-md shadow-md hover:bg-gray-300"  onClick={closeSidebar}>Close</button>
+        <button
+          className="bg-gray-200 px-4 py-2 rounded-md shadow-md hover:bg-gray-300"
+          onClick={closeSidebar}
+        >
+          Close
+        </button>
       )}
     </>
   );
