@@ -15,6 +15,7 @@ export default function Header() {
   const [userDropdown, setUserDropdown] = useState(false);
   const [messagesModalOpen, setMessagesModalOpen] = useState(false);
 
+console.log(user);
   const toggleLoginModal = () => {
     setLoginModalOpen((prev) => !prev);
   };
@@ -78,7 +79,7 @@ export default function Header() {
           modalOpen={messagesModalOpen}
           setModalOpen={setMessagesModalOpen}
         >
-          <Message messages={user.messages} />
+          <Message messages={user.message} />
         </Modal>
       )}
 
