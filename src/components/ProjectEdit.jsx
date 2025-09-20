@@ -77,7 +77,7 @@ export default function ProjectEdit({
   };
 
   const inputStyles =
-    "flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100";
+    "flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100 px-2";
   const inputDivStyles = "flex flex-row gap-2 w-100 max-w-xs md:max-w-100";
   const formStyles = "flex flex-col gap-3 items-center";
 
@@ -98,7 +98,7 @@ export default function ProjectEdit({
       <div className={inputDivStyles}>
         <label htmlFor="description">description: </label>
         <textarea
-        className="flex-1 shadow-md border border-gray-200 bg-gray-100"
+        className="flex-1 shadow-md border border-gray-200 bg-gray-100 px-2"
           name="description"
           value={projectData.description}
           onChange={handleChange}

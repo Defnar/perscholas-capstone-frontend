@@ -8,7 +8,7 @@ export default function Home() {
   const [ownerSearch, setOwnerSearch] = useState("");
 
   return (
-    <>
+    <div className="p-4">
       <button onClick={() => setIsPrivate((prev) => !prev)}>
         toggle Private
       </button>
@@ -23,6 +23,6 @@ export default function Home() {
         owner={ownerSearch}
         privateProject={isPrivate}
       />
-    </>
+    </div>
   );
 }

@@ -77,7 +77,7 @@ export default function EditTask({
     }
   };
 
-  const inputStyles = "flex-1 shadow-md border border-gray-200 h-7 bg-gray-100";
+  const inputStyles = "flex-1 shadow-md border border-gray-200 h-7 bg-gray-100 px-2";
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>

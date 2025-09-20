@@ -101,7 +101,7 @@ export default function Collaborators({
                   {inviteList.map((iUser) => (
                     <li key={iUser._id}>
                       {iUser.username}{" "}
-                      <button onClick={() => inviteUserById(iUser._id)}>
+                      <button className="px-4 bg-emerald-200 rounded-md shadow-md hover:bg-emerald-300 hover:cursor-pointer" onClick={() => inviteUserById(iUser._id)}>
                         Invite
                       </button>
                     </li>

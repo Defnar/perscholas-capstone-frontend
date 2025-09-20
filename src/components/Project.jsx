@@ -25,7 +25,7 @@ export default function Project({
 
   const categoryStyles = "font-semibold"
   return (
-    <div className="border border-gray-200 shadow-md">
+    <div className="border border-gray-200 shadow-md p-2">
       <h2 className="font-bold">{title}</h2>
       {!userProject && <p><span className={categoryStyles}>Owner: </span> {owner}</p>}
       <p><span className={categoryStyles}>About:</span> {description}</p>

@@ -205,7 +205,7 @@ export default function LoginHandler({ closeModal }) {
     );
   };
 
-  const inputStyles = "flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100";
+  const inputStyles = "flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100 px-2";
   const inputDivStyles = "flex flex-row gap-2 w-100 max-w-xs md:max-w-100";
   const badInputStyles = "text-center text-red-600";
   const formStyles = "flex flex-col gap-3 items-center";
