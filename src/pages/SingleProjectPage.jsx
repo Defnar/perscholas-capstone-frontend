@@ -8,6 +8,7 @@ import EditTask from "../components/EditTask";
 import Collaborators from "../components/Collaborators";
 import ProjectEdit from "../components/ProjectEdit";
 import LoaderSpinner from "../components/LoaderSpinner";
+import { Bounce, toast } from "react-toastify";
 
 export default function SingleProjectPage() {
   const { user } = useContext(AuthContext);
@@ -25,6 +26,18 @@ export default function SingleProjectPage() {
 
   useEffect(() => {
     console.log(error);
+    if (error)
+      toast(`Error occurred loading page: ${error}`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
   }, [error]);
 
   //sets project and task list
@@ -173,7 +186,9 @@ export default function SingleProjectPage() {
             description={projectData.description}
             _id={projectData._id}
             status={projectData.status}
+            deadline={projectData.deadline}
             privateProject={projectData.privateProject}
+            setEditedProjectData={setProjectData}
           />
         </Modal>
       )}

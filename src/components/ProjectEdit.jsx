@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { Bounce, toast } from "react-toastify";
+import dayjs from "dayjs";
 
 export default function ProjectEdit({
   closeModal,
@@ -10,15 +11,18 @@ export default function ProjectEdit({
   status,
   deadline,
   privateProject,
+  setEditedProjectData
 }) {
   const [projectData, setProjectData] = useState({
     title: title || "",
     description: description || "",
     _id: _id || "",
     status: status || "To Do",
-    deadline: deadline ? new Date(deadline) : null,
+    deadline: deadline ? dayjs(deadline).format("YYYY-MM-DDTHH:mm") : null,
     private: privateProject || true,
   });
+
+  console.log(deadline);
 
   const { api } = useContext(AuthContext);
   const [titleValidity, setTitleValidity] = useState(true);
@@ -42,6 +46,7 @@ export default function ProjectEdit({
     if (name === "title") setTitleValidity(value.length > 0);
   };
 
+  //handles submit
   const handleSubmit = async (event) => {
     event.preventDefault();
 
@@ -77,6 +82,8 @@ export default function ProjectEdit({
           private: projectData.private,
         });
       }
+
+      setEditedProjectData(prev => ({...prev, ...projectData}));
 
       toast(`Successfully edited/created project`, {
         position: "top-center",
@@ -182,7 +189,7 @@ export default function ProjectEdit({
           className={inputStyles}
           type="datetime-local"
           name="deadline"
-          value={deadline}
+          value={projectData.deadline}
           onChange={handleChange}
         />
       </div>
