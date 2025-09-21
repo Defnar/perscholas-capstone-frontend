@@ -8,7 +8,7 @@ import LoaderSpinner from "./LoaderSpinner";
 export default function ProjectList({ privateProject = false, title, owner }) {
   const [sortBy, setSortBy] = useState("title");
   const [sortOrder, setSortOrder] = useState(1);
-  const [pageSize, setPageSize] = useState(5);
+  const [pageSize, setPageSize] = useState(5); //set page size not used, future features if used
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
@@ -58,7 +58,7 @@ export default function ProjectList({ privateProject = false, title, owner }) {
 
   useEffect(() => {
     setPage(Math.min(Math.max(page, 1), totalPages));
-  }, [totalPages]);
+  }, [totalPages, page]);
 
   return (
     <>

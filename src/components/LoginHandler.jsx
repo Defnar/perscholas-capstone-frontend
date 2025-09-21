@@ -303,6 +303,7 @@ export default function LoginHandler({ closeModal }) {
       }
     };
 
+    //listens for a message containing the token and user
     window.addEventListener("message", handleMessage);
 
     return () => {
@@ -316,6 +317,7 @@ export default function LoginHandler({ closeModal }) {
       "Github Oauth"
     );
   };
+
 
   const inputStyles =
     "flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100 px-2";

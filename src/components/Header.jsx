@@ -14,8 +14,9 @@ export default function Header() {
 
   const [loginModalOpen, setLoginModalOpen] = useState(false);
   const [projectModalOpen, setProjectModalOpen] = useState(false);
-  const [userDropdown, setUserDropdown] = useState(false);
   const [messagesModalOpen, setMessagesModalOpen] = useState(false);
+
+  console.log(user);
 
   const toggleLoginModal = () => {
     setLoginModalOpen((prev) => !prev);
@@ -84,9 +85,6 @@ export default function Header() {
     }
   };
 
-  const toggleDropDown = () => {
-    setUserDropdown((prev) => !prev);
-  };
   return (
     <div className="flex flex-row items-center justify-between h-13 shadow-md bg-emerald-300 p-4 w-full">
       <div className="flex flex-row gap-5 items-center">
@@ -96,31 +94,33 @@ export default function Header() {
         <h1 className="font-bold italic text-xl">ProTracker</h1>
       </div>
       <div className="flex flex-row items-center gap-5 ">
-        {!user && <button className="hover:cursor-pointer hover:bg-emerald-400 px-4 py-2 rounded-md" onClick={toggleLoginModal}>Login/register</button>}
-        {user && (
-          <button className="hover:cursor-pointer hover:bg-emerald-400 px-4 py-2 rounded-md" onClick={toggleProjectModal}>
-            <PlusIcon className="size-8 sm:hidden" />
-            <span className="hidden sm:block">New Project</span>
+        {!user && (
+          <button
+            className="hover:cursor-pointer hover:bg-emerald-400 px-4 py-2 rounded-md"
+            onClick={toggleLoginModal}
+          >
+            Login/register
           </button>
         )}
-        <div className="relative">
-          {user && (
+        {user && (
+          <>
             <button
-              className="bg-emerald-400 px-2 py-1 rounded-md shadow-md flex flex-row gap-1 hover:cursor-pointer hover:bg-emerald-500"
-              onClick={toggleDropDown}
+              className="hover:cursor-pointer hover:bg-emerald-400 px-4 py-2 rounded-md"
+              onClick={toggleProjectModal}
             >
-              <UserCircleIcon className="size-8" />
-              <span className="hidden sm:block">{user.username}</span>
+              <PlusIcon className="size-8 sm:hidden" />
+              <span className="hidden sm:block">New Project</span>
             </button>
-          )}
-          {userDropdown && (
             <Dropdown
+              buttonStyles="bg-emerald-400 px-2 py-1 rounded-md shadow-md flex flex-row gap-1 hover:cursor-pointer hover:bg-emerald-500"
               options={options}
               onSelect={selectOption}
-              setOpen={setUserDropdown}
-            />
-          )}
-        </div>
+            >
+              <UserCircleIcon className="size-8" />
+              <span className="hidden sm:block">{user.username}</span>{" "}
+            </Dropdown>{" "}
+          </>
+        )}
       </div>
       {messagesModalOpen && (
         <Modal

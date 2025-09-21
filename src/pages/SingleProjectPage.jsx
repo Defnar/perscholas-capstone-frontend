@@ -27,12 +27,14 @@ export default function SingleProjectPage() {
     console.log(error);
   }, [error]);
 
+  //sets project and task list
   useEffect(() => {
     if (!data || !data.tasks) return;
     setTasks(data.tasks);
     setProjectData(data);
   }, [data]);
 
+  //runs math to determine how many tasks are showing for user feedback
   useEffect(() => {
     if (!tasks) return;
     setTaskCount(tasks.length || 0);
@@ -47,9 +49,11 @@ export default function SingleProjectPage() {
       (projectUser) => projectUser.user._id == user._id
     );
 
+    //user permissions
     setPermissions(userObject.permissions);
   }, [projectData, user]);
 
+  //increases visible tasks
   const showMoreTasks = () => {
     setVisibleCount((prev) => Math.min(prev + 5, taskCount));
   };
@@ -67,7 +71,8 @@ export default function SingleProjectPage() {
       {loading && <LoaderSpinner />}
       {user && projectData && (
         <div className="flex flex-col gap-4 h-screen p-2">
-          <div className="flex gap-4">
+          <div className="flex sm:flex-row flex-col gap-4">
+            {/*Project data*/}
             <div className="flex flex-col gap-2 flex-1 border border-gray-200 shadow-md p-4 rounded-lg">
               <h2 className="text-4xl font-bold mb-2">{projectData.title}</h2>
               <p>
@@ -96,7 +101,8 @@ export default function SingleProjectPage() {
               </div>
             </div>
 
-            <div className="w-1/3 border border-gray-200 shadow-md p-4 rounded-lg bg-white">
+            {/*collaborator box*/}
+            <div className="sm:w-1/3 w-full border border-gray-200 shadow-md p-4 rounded-lg bg-white">
               <Collaborators
                 collabList={projectData.user}
                 permissions={permissions}
@@ -106,6 +112,7 @@ export default function SingleProjectPage() {
             </div>
           </div>
 
+          {/*Task list*/}
           <div className="flex-1 border border-gray-200 shadow-md p-4 rounded-lg bg-white">
             <p className="mb-2">
               Showing {visibleCount} of {taskCount} task

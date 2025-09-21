@@ -13,6 +13,9 @@ export default function AppProviders({ children }) {
   console.log(user, token);
 
   //earlier way to handle refreshing.  Tried swapping to state, broke the app (:
+  //prevents race conditions and double sending the refresh api for token refresh.
+  //if double send, it breaks in that one response sends a token logged out error
+  //causing no token refresh
   const attemptedRefreshRef = useRef(false);
 
   //ref for consistent login only
@@ -61,9 +64,12 @@ export default function AppProviders({ children }) {
           !attemptedRefreshRef.current
         ) {
           try {
+            //checks if there is an attempt happening first, then tries to get new token
             attemptedRefreshRef.current = true;
             if (refreshingLoginRef.current) return;
             refreshingLoginRef.current = true;
+
+            //refresh attempt
             const refreshResponse = await apiRefreshRef.current.get(
               "refreshToken",
               {
@@ -71,12 +77,15 @@ export default function AppProviders({ children }) {
               }
             );
             const { token: newToken, user: newUser } = refreshResponse.data;
-
+            //set new token and user object
             setToken(newToken);
             setUser(newUser);
 
+            //sets new token to api call before pushing it
             config.headers.Authorization = `Bearer ${newToken}`;
             attemptedRefreshRef.current = false;
+
+            //finishes intercept, sends the api call along it's merry way
             return apiRef.current(config);
           } catch (err) {
             console.log("Token refresh failed:", err);
@@ -101,6 +110,8 @@ export default function AppProviders({ children }) {
   const { pathname } = useLocation();
 
   //attempting to do refresh logging in, I'm tired of logging myself in
+  //on refresh, tries to grab token.  If no token, sends you to homepage.
+  //if token is grabbed, sends you to your original destination
   useEffect(() => {
     const refreshLogin = async () => {
       attemptedRefreshRef.current = true;
@@ -128,7 +139,6 @@ export default function AppProviders({ children }) {
       }
     };
 
-    console.log("attempted? ", attemptedRefreshRef.current);
     if (!attemptedRefreshRef.current) {
       refreshLogin();
     }

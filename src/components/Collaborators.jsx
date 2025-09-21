@@ -4,6 +4,7 @@ import Dropdown from "./Dropdown";
 import AuthContext from "../contexts/AuthContext";
 import JoinRequests from "./JoinRequests";
 import { Bounce, toast } from "react-toastify";
+import { EllipsisVerticalIcon } from "@heroicons/react/16/solid";
 
 export default function Collaborators({
   collabList,
@@ -15,7 +16,6 @@ export default function Collaborators({
 }) {
   const [collaborators, setCollaborators] = useState([...collabList]);
   const [modalOpen, setModalOpen] = useState(false);
-  const [dropdown, setDropdown] = useState(false);
   const [inviteUser, setInviteUser] = useState(false);
   const [inviteInput, setInviteInput] = useState("");
   const [inviteList, setInviteList] = useState([]);
@@ -49,7 +49,6 @@ export default function Collaborators({
         setJoinRequestModal(true);
         break;
     }
-    setDropdown(false);
   };
 
   const handleInviteChange = (e) => setInviteInput(e.target.value);
@@ -96,7 +95,7 @@ export default function Collaborators({
   };
 
   return (
-    <div>
+    <div className="relative">
       {inviteUser && (
         <Modal modalOpen={inviteUser} setModalOpen={setInviteUser}>
           <div className="flex flex-col">
@@ -169,26 +168,19 @@ export default function Collaborators({
       )}
 
       {permissions?.includes("inviteUsers") && (
-        <div className="flex flex-col mb-4 relative">
-          <button
-            className="bg-emerald-200 rounded-md px-4 py-2 shadow-md hover:bg-emerald-300"
-            onClick={() => setDropdown(true)}
-          >
-            Add Collaborators
-          </button>
-          {dropdown && (
-            <Dropdown
-              options={options}
-              setOpen={setDropdown}
-              onSelect={optionSelect}
-              openDropdown={true}
-            />
-          )}
-        </div>
+        <Dropdown
+          options={options}
+          onSelect={optionSelect}
+          buttonStyles=" py-1 absolute top-0 right-0"
+          className="absolute top-0 right-0"
+          position="right"
+        >
+          <EllipsisVerticalIcon className="w-6 h-6" />{" "}
+        </Dropdown>
       )}
 
       <div className="px-4 py-2">
-        <h2 className="font-bold text-center text-lg mb-2">Collaborators</h2>
+        <h2 className="font-bold text-center text-lg mb-2"><span className="hidden md:inline">Collaborators</span><span className="md:hidden">Collab</span></h2>
         <ul className="space-y-1 mb-2">
           {collaborators.slice(0, spliceIndex).map((collab) => (
             <li

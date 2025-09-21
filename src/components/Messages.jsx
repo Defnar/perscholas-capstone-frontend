@@ -11,9 +11,21 @@ export default function Message() {
 
   const acceptMessage = async (messageId) => {
     try {
-      const response = await api.post(`message/${messageId}`);
+      await api.post(`message/${messageId}`);
 
-      console.log(response);
+      
+      toast(`successfully joined project, check your private projects`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+
     } catch (err) {
       console.log(err);
       toast(`failed to load messages`, {

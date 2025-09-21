@@ -11,10 +11,12 @@ export default function JoinRequests({
 
   const [messageList, setMessageList] = useState(messages);
 
+  //sets messages to state
   useEffect(() => {
     setMessageList(messages);
   }, [messages]);
 
+  //accepts message, changes state, sends data to abckend
   const acceptMessage = async (messageId) => {
     try {
       const response = await api.put(`projects/${projectId}/accept`, {
@@ -55,6 +57,7 @@ export default function JoinRequests({
     }
   };
 
+  //rejects message, sets state, sends changes to backend
   const rejectMessage = async (messageId) => {
     try {
       await api.put(`projces/${projectId}/reject`, {

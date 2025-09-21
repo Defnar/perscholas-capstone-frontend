@@ -57,7 +57,7 @@ export default function Task({
 
     setStatus(newStatus);
     try {
-      const response = await api.put(
+      await api.put(
         `projects/${projectId}/tasks/${task._id}/status`,
         {
           status: newStatus,
@@ -81,7 +81,7 @@ export default function Task({
 
   const onTaskDelete = async () => {
     try {
-      const response = await api.delete(
+      await api.delete(
         `projects/${projectId}/tasks/${task._id}`
       );
 
