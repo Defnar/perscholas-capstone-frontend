@@ -22,7 +22,7 @@
   VITE_API_URL=
   VITE_ORIGIN_URL=
   ```
-  - the VITE_API_URL should contain /api at the end, as the program is configured to already have api in the base url
+  - the VITE_API_URL is the backend url and should contain `/api` at the end, as the program is configured to already have api in the base url
   - origin url should be the url from which the front end is running, for example it would be `http://localhost:5173` on vite/react being the default address from which it runs
  
 # Dependencies
