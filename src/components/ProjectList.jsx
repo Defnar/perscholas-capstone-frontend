@@ -81,7 +81,7 @@ export default function ProjectList({ privateProject = false, title, owner }) {
       </div>
       {loading && <LoaderSpinner />}
       {data?.projects.length === 0 && <p>No Projects found</p>}
-      {error && <p>Failed to retrieve project list with error: {error}</p>}
+      {error && <p>Failed to retrieve project list with error: {error.status} {error.message}</p>}
       <ul>
         {data &&
           data.projects.map((project) => (
