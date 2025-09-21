@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { Bounce, toast } from "react-toastify";
+import dayjs from "dayjs";
 
 export default function EditTask({
   title,
@@ -17,7 +18,7 @@ export default function EditTask({
     title: title || "",
     description: description || "",
     status: status || "To Do",
-    deadline: deadline ? new Date(deadline).toISOString().slice(0, 16) : "",
+    deadline: deadline ? dayjs(deadline).format("YYYY-MM-DDTHH:mm") : "",
   });
   const { api } = useContext(AuthContext);
 
