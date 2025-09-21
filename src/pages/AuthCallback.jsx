@@ -8,8 +8,6 @@ export default function AuthCallback() {
   const oauthStatus = searchParams.get("oauth");
   const userId = searchParams.get("userid");
 
-  console.log("token: ", token);
-  console.log(oauthStatus);
 
   useEffect(() => {
     if (oauthStatus === "success" && token) {

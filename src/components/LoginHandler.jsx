@@ -199,12 +199,11 @@ export default function LoginHandler({ closeModal }) {
     } 
 
     try {
-      const response = await api.post(`users/register`, {
+      await api.post(`users/register`, {
         username: registrationData.username,
         email: registrationData.email,
         password: registrationData.password,
       });
-      console.log(response);
 
       toast(`User successfully registered, Please log in`, {
         position: "top-center",

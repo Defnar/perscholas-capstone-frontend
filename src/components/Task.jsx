@@ -114,7 +114,6 @@ export default function Task({
   };
 
   const toggleEditModal = () => {
-    console.log("toggling task");
     setEditTaskModal((prev) => !prev);
   };
 

@@ -16,8 +16,6 @@ export default function Header() {
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [messagesModalOpen, setMessagesModalOpen] = useState(false);
 
-  console.log(user);
-
   const toggleLoginModal = () => {
     setLoginModalOpen((prev) => !prev);
   };
@@ -39,7 +37,6 @@ export default function Header() {
       setUser(null);
       setToken(null);
 
-      console.log(response);
       toast(`successfully logged out`, {
         position: "top-center",
         autoClose: 5000,

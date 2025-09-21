@@ -17,8 +17,6 @@ export default function ProjectList({ privateProject = false, title, owner }) {
     [privateProject]
   );
 
-  console.log("page: ", page);
-  console.log("total pages: ", totalPages);
   //tracks params and changes them as they changed
   const params = useMemo(
     () => ({
@@ -45,7 +43,6 @@ export default function ProjectList({ privateProject = false, title, owner }) {
   useEffect(() => {
     if (data && data.total)
       setTotalPages(Math.ceil(Number(data.total) / pageSize));
-    console.log("data: ", data);
   }, [data, pageSize]);
 
   const handleSortByChange = (event) => {

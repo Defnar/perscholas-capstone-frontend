@@ -13,7 +13,6 @@ export default function Home() {
   }, [view]);
 
   const handleViewChange = (event) => {
-    console.log(event.target.value);
     setView(event.target.value);
   };
 

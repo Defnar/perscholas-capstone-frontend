@@ -28,7 +28,6 @@ export default function ProjectEdit({
 
   const handleChange = (event) => {
     const { name, value } = event.target;
-    console.log(name, value);
 
     //changes private to boolean
     let newValue = value;
@@ -61,9 +60,8 @@ export default function ProjectEdit({
       return;
     }
     try {
-      let response;
       if (projectData._id.length > 0) {
-        response = await api.put(`projects/${projectData._id}`, {
+        await api.put(`projects/${projectData._id}`, {
           title: projectData.title,
           description: projectData.description,
           status: projectData.status,
@@ -71,7 +69,7 @@ export default function ProjectEdit({
           private: projectData.private,
         });
       } else {
-        response = await api.post("projects/", {
+        await api.post("projects/", {
           title: projectData.title,
           description: projectData.description,
           status: projectData.status,
@@ -79,8 +77,6 @@ export default function ProjectEdit({
           private: projectData.private,
         });
       }
-
-      console.log(response.data);
 
       toast(`Successfully edited/created project`, {
         position: "top-center",

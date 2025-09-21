@@ -10,8 +10,6 @@ export default function AppProviders({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  console.log(user, token);
-
   //earlier way to handle refreshing.  Tried swapping to state, broke the app (:
   //prevents race conditions and double sending the refresh api for token refresh.
   //if double send, it breaks in that one response sends a token logged out error
@@ -34,10 +32,6 @@ export default function AppProviders({ children }) {
       headers: { "Content-type": "application/json" },
     })
   );
-
-  useEffect(() => {
-    console.log("mounting auth providers");
-  }, []);
 
   //attach token to call
   useEffect(() => {
@@ -116,7 +110,6 @@ export default function AppProviders({ children }) {
     const refreshLogin = async () => {
       attemptedRefreshRef.current = true;
       try {
-        console.log("attempting login");
         const response = await apiRefreshRef.current.get("refreshToken", {
           withCredentials: true,
         });

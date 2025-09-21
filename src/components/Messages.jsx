@@ -44,11 +44,33 @@ export default function Message() {
 
   const rejectMessage = async (messageId) => {
     try {
-      const response = await api.post(`message/${messageId}/reject`);
+      await api.post(`message/${messageId}/reject`);
+      
+      toast(`rejected joining the projecc`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
 
-      console.log(response);
     } catch (err) {
-      console.log(err);
+      console.log(err)
+      toast(`error occurred, check logs for more info`, {
+        position: "top-center",
+        autoClose: 5000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: false,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
     }
   };
 
