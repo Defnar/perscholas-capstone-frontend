@@ -3,7 +3,7 @@ import AuthContext from "../contexts/AuthContext";
 import Modal from "./Modal";
 import LoginHandler from "./LoginHandler";
 import ProjectEdit from "./ProjectEdit";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import Message from "./Messages";
 import { HomeIcon, PlusIcon, UserCircleIcon } from "@heroicons/react/24/solid";
@@ -24,6 +24,7 @@ export default function Header() {
     setProjectModalOpen((prev) => !prev);
   };
 
+  const navigate = useNavigate();
   const logOut = async () => {
     try {
       await api.post(
@@ -36,6 +37,9 @@ export default function Header() {
 
       setUser(null);
       setToken(null);
+
+      //navigate home after logout
+      navigate("/");
 
       toast(`successfully logged out`, {
         position: "top-center",
