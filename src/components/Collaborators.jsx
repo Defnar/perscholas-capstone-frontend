@@ -96,7 +96,7 @@ export default function Collaborators({
   };
 
   return (
-    <>
+    <div>
       {inviteUser && (
         <Modal modalOpen={inviteUser} setModalOpen={setInviteUser}>
           <div className="flex flex-col">
@@ -169,7 +169,7 @@ export default function Collaborators({
       )}
 
       {permissions?.includes("inviteUsers") && (
-        <div className="flex flex-col mb-4">
+        <div className="flex flex-col mb-4 relative">
           <button
             className="bg-emerald-200 rounded-md px-4 py-2 shadow-md hover:bg-emerald-300"
             onClick={() => setDropdown(true)}
@@ -223,6 +223,6 @@ export default function Collaborators({
           Close
         </button>
       )}
-    </>
+    </div>
   );
 }

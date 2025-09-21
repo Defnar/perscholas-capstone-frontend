@@ -15,6 +15,9 @@ export default function AppProviders({ children }) {
   //earlier way to handle refreshing.  Tried swapping to state, broke the app (:
   const attemptedRefreshRef = useRef(false);
 
+  //ref for consistent login only
+  const refreshingLoginRef = useRef(false);
+
   const apiRef = useRef(
     axios.create({
       baseURL: import.meta.env.VITE_API_URL,
@@ -59,8 +62,8 @@ export default function AppProviders({ children }) {
         ) {
           try {
             attemptedRefreshRef.current = true;
-            if (refreshing) return;
-            const refreshing = true;
+            if (refreshingLoginRef.current) return;
+            refreshingLoginRef.current = true;
             const refreshResponse = await apiRefreshRef.current.get(
               "refreshToken",
               {
