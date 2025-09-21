@@ -1,12 +1,51 @@
-# React + Vite
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+# About this project
+- This is the capstone project of the per scholas engineering course
+- this is intended to demonstrate proficiency in the mern stack, including but not limited to:
+  - fundamental programming concepts
+  - responsive web design
+  - fundamental and advanced react concepts
+  - understanding and implementation of a RESTful server with database connection
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- This app is called protasker, with the intention of allowing a user to create, update, and delete projects, as well as invite users to collaborate with one another on projects
 
-## Expanding the ESLint configuration
+# LIVE DEPLOY:
+- https://perscholas-capstone-frontend.onrender.com/
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+ # Backend repository:
+ - https://github.com/Defnar/perscholas-capstone-backend
+
+# App setup/installation
+- After downloading your files, you will need a .env file with the following parameters:
+  ```
+  VITE_API_URL=
+  VITE_ORIGIN_URL=
+  ```
+  - the VITE_API_URL should contain /api at the end, as the program is configured to already have api in the base url
+  - origin url should be the url from which the front end is running, for example it would be `http://localhost:5173` on vite/react being the default address from which it runs
+ 
+# Dependencies
+## Dev
+- react/vite setups
+## nonDev 
+- heroicons/react
+- tailwindcss/vite
+- axios
+- react-icons
+- react-router-dom
+- react-toastify
+
+
+# Features
+- Users may create/update/delete tasks based on defined permissions.
+- Users may designate their project as public or private.  Public projects are shown on the front page, and other users may send a request to join the project
+- From within the page, users who have the permission to do so may invite other users as well
+- implemented a double token system, allowing a short-term token to be saved in state, and a resfresh token to be stored in httponly cookie.  On app refresh or open, it will attempt to log user in using the refresh token if it exists
+- implemented the ability for a project owner to update the permissions another user has for a project
+# Missing/Planned features
+- users are not yet able to leave a project they are collaborating on.  the endpoint on the backend is set up, but no frontend connection has been made yet
+- users are not informed if their requests have been accepted or rejected yet, as this would take frontend and backend work
+- functionality to allower a user to display a different number of projects on the page
+
+
