@@ -13,7 +13,7 @@ export default function ProjectList({ privateProject = false, title, owner }) {
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
 
-  const {user} = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
 
   const url = useMemo(
     () => `projects/${privateProject ? "private" : ""}`,
@@ -84,8 +84,17 @@ export default function ProjectList({ privateProject = false, title, owner }) {
       </div>
       {loading && <LoaderSpinner />}
       {data?.projects.length === 0 && <p>No Projects found</p>}
-      {!user && privateProject && <p className="text-center text-lg font-semibold">Please login to view private projects</p>}
-      {user && error && <p>Failed to retrieve project list with error: {error.status} {error.message}</p>}
+      {!user && privateProject && (
+        <p className="text-center text-lg font-semibold">
+          Please login to view private projects
+        </p>
+      )}
+      {((user && error) || (!privateProject && error)) && (
+        <p>
+          Failed to retrieve project list with error: {error.status}{" "}
+          {error.message}
+        </p>
+      )}
       <ul>
         {data &&
           data.projects.map((project) => (
