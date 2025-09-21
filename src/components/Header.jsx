@@ -26,7 +26,7 @@ export default function Header() {
 
   const logOut = async () => {
     try {
-      const response = await api.post(
+      await api.post(
         "users/logout",
         {},
         {
