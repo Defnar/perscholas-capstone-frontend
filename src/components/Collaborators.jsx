@@ -200,6 +200,7 @@ export default function Collaborators({
           <EditCollab
             user={collabToEdit}
             projectId={projectId}
+            setCollaborators={setCollaborators}
             closeModal={closeEditCollaboratorModal}
           />
         </Modal>

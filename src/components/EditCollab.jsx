@@ -2,7 +2,12 @@ import { useContext, useState } from "react";
 import LoaderSpinner from "./LoaderSpinner";
 import AuthContext from "../contexts/AuthContext";
 
-export default function EditCollab({ user, projectId, closeModal }) {
+export default function EditCollab({
+  user,
+  projectId,
+  setCollaborators,
+  closeModal,
+}) {
   const [collab, setCollab] = useState(user || null);
 
   const { api } = useContext(AuthContext);
@@ -54,6 +59,10 @@ export default function EditCollab({ user, projectId, closeModal }) {
         permissions: perms,
       });
 
+      setCollaborators((prev) =>
+        prev.map((coll) => (coll.user._id === collab.user._id ? collab : coll))
+      );
+
       console.log("user successfully saved");
     } catch (err) {
       console.log(err);
@@ -73,9 +82,7 @@ export default function EditCollab({ user, projectId, closeModal }) {
           <h2 className="text-lg font-bold text-center mb-4">
             {collab?.user.username}
           </h2>
-          <form
-            className="flex flex-col gap-3 mb-5 border border-gray-300 p-3 rounded-md shadow-sm"
-          >
+          <form className="flex flex-col gap-3 mb-5 border border-gray-300 p-3 rounded-md shadow-sm">
             {allPermissions.map(({ perm, description }) => (
               <label
                 key={perm}
@@ -95,14 +102,21 @@ export default function EditCollab({ user, projectId, closeModal }) {
           {/*buttons*/}
           <div className="flex flex-col items-center gap-4">
             <div className="flex flex-col sm:flex-row gap-4 items-center sm:justify-evenly">
-              <button onClick={handleUserSubmit} className="bg-emerald-300 px-4 py-2 rounded-md shadow-md w-fit hover:bg-emerald-400 hover:cursor-pointer">
+              <button
+                onClick={handleUserSubmit}
+                className="bg-emerald-300 px-4 py-2 rounded-md shadow-md w-fit hover:bg-emerald-400 hover:cursor-pointer"
+              >
                 Save User
               </button>
-              <button className="bg-red-300 px-4 py-2 rounded-md shadow-md w-fit hover:bg-red-400 hover:cursor-pointer">
+              {/*removed until functionality can be created for it.  Need to make api endpoint */}
+              {/* <button className="bg-red-300 px-4 py-2 rounded-md shadow-md w-fit hover:bg-red-400 hover:cursor-pointer">
                 Remove User
-              </button>
+              </button> */}
             </div>
-            <button onClick={closeModal} className="bg-gray-300 px-4 py-2 rounded-md shadow-md hover:bg-gray-400 hover:cursor-pointer w-1/2 self-center">
+            <button
+              onClick={closeModal}
+              className="bg-gray-300 px-4 py-2 rounded-md shadow-md hover:bg-gray-400 hover:cursor-pointer w-1/2 self-center"
+            >
               Close
             </button>
           </div>
