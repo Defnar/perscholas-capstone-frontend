@@ -66,7 +66,7 @@ export default function Dropdown({
         >
           {options.map((option) => (
             <li
-              className="hover:bg-green-200 hover:cursor-pointer"
+              className="px-2 hover:bg-green-200 hover:cursor-pointer"
               key={option}
               value={option}
               onClick={() => {

@@ -5,6 +5,7 @@ import AuthContext from "../contexts/AuthContext";
 import JoinRequests from "./JoinRequests";
 import { Bounce, toast } from "react-toastify";
 import { EllipsisVerticalIcon } from "@heroicons/react/16/solid";
+import EditCollab from "./EditCollab";
 
 export default function Collaborators({
   collabList,
@@ -20,14 +21,18 @@ export default function Collaborators({
   const [inviteInput, setInviteInput] = useState("");
   const [inviteList, setInviteList] = useState([]);
   const [joinRequestModal, setJoinRequestModal] = useState(false);
+  const [editCollabModal, setEditCollabModal] = useState(false);
+  const [collabToEdit, setCollabToEdit] = useState();
 
   const { api } = useContext(AuthContext);
   const visibleCount = 10;
 
+  //sets up the collaborator list as a state
   useEffect(() => {
     setCollaborators([...collabList]);
   }, [collabList]);
 
+  //if component is a sidebar, determines how many to view based on visible count and collaborator length
   const spliceIndex = useMemo(
     () =>
       sidebar
@@ -36,10 +41,13 @@ export default function Collaborators({
     [collaborators, sidebar]
   );
 
+  //opens the collaborator component as a modal
   const toggleModal = () => setModalOpen((prev) => !prev);
 
+  //options for dropdown menu
   const options = ["invite user", "join requests"];
 
+  //takes a user selection from dropdowns and runs function with it
   const optionSelect = (option) => {
     switch (option) {
       case "invite user":
@@ -51,8 +59,10 @@ export default function Collaborators({
     }
   };
 
+  //handler for the invite search bar value
   const handleInviteChange = (e) => setInviteInput(e.target.value);
 
+  //handler for submitting a search and setting the list of users to display
   const handleInviteSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -76,6 +86,7 @@ export default function Collaborators({
     }
   };
 
+  //uses a user id to invite a user to collab on the project
   const inviteUserById = async (userId) => {
     try {
       await api.post(`projects/${projectId}/invite`, { userId });
@@ -94,11 +105,24 @@ export default function Collaborators({
     }
   };
 
+  //sets collab user to edit and enables edit modal
+  const editCollaborator = (collab) => {
+    setCollabToEdit(collab);
+    setEditCollabModal(true);
+  };
+
+  //close  edit collaborator modal
+  const closeEditCollaboratorModal = () => {
+    setEditCollabModal(false);
+  };
+
   return (
     <div className="relative">
+      {/*search modal for finding and inviting users*/}
       {inviteUser && (
         <Modal modalOpen={inviteUser} setModalOpen={setInviteUser}>
           <div className="flex flex-col">
+            {/*search bar*/}
             <h2 className="font-bold text-center">Search For Users</h2>
             <form onSubmit={handleInviteSubmit} className="flex flex-col gap-2">
               <div>
@@ -117,6 +141,7 @@ export default function Collaborators({
                   Search
                 </button>
               </div>
+              {/*list of users found*/}
               {inviteList.length === 0 && <p>No users found</p>}
               <ul className="space-y-1 mb-2">
                 {inviteList.map((iUser) => (
@@ -146,6 +171,7 @@ export default function Collaborators({
         </Modal>
       )}
 
+      {/*join requests*/}
       {joinRequestModal && (
         <Modal modalOpen={joinRequestModal} setModalOpen={setJoinRequestModal}>
           <JoinRequests
@@ -157,6 +183,7 @@ export default function Collaborators({
         </Modal>
       )}
 
+      {/*opens collaborators as a modal to show all*/}
       {modalOpen && (
         <Modal modalOpen={modalOpen} setModalOpen={setModalOpen}>
           <Collaborators
@@ -167,6 +194,18 @@ export default function Collaborators({
         </Modal>
       )}
 
+      {/*allows editing a single collaborator*/}
+      {editCollabModal && (
+        <Modal modalOpen={editCollabModal} setModalOpen={setEditCollabModal}>
+          <EditCollab
+            user={collabToEdit}
+            projectId={projectId}
+            closeModal={closeEditCollaboratorModal}
+          />
+        </Modal>
+      )}
+
+      {/*Button for inviting users or responding to requests */}
       {permissions?.includes("inviteUsers") && (
         <Dropdown
           options={options}
@@ -179,15 +218,21 @@ export default function Collaborators({
         </Dropdown>
       )}
 
+      {/*Collaborator list*/}
       <div className="px-4 py-2">
-        <h2 className="font-bold text-center text-lg mb-2"><span className="hidden md:inline">Collaborators</span><span className="md:hidden">Collab</span></h2>
+        <h2 className="font-bold text-center text-lg mb-2">
+          <span className="hidden md:inline">Collaborators</span>
+          <span className="md:hidden">Collab</span>
+        </h2>
         <ul className="space-y-1 mb-2">
           {collaborators.slice(0, spliceIndex).map((collab) => (
             <li
               key={collab.user._id}
               className="px-2 py-1 rounded-md hover:bg-gray-100"
             >
-              {collab.user.username}
+              <button onClick={() => editCollaborator(collab)}>
+                {collab.user.username}
+              </button>
             </li>
           ))}
         </ul>

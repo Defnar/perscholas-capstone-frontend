@@ -65,6 +65,7 @@ export default function SingleProjectPage() {
   const toggleProjectModal = () => {
     setEditProjectModal((prev) => !prev);
   };
+
   return (
     <>
       {!user && <h2>Unauthorized, Please Log In</h2>}
