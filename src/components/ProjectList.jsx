@@ -1,9 +1,10 @@
-import { useMemo, useState, useEffect } from "react";
+import { useMemo, useState, useEffect, useContext } from "react";
 import useFetch from "../hooks/useFetch";
 import Project from "./Project";
 import { useNavigate } from "react-router-dom";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/16/solid";
 import LoaderSpinner from "./LoaderSpinner";
+import AuthContext from "../contexts/AuthContext";
 
 export default function ProjectList({ privateProject = false, title, owner }) {
   const [sortBy, setSortBy] = useState("title");
@@ -11,6 +12,8 @@ export default function ProjectList({ privateProject = false, title, owner }) {
   const [pageSize, setPageSize] = useState(5); //set page size not used, future features if used
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
+
+  const {user} = useContext(AuthContext);
 
   const url = useMemo(
     () => `projects/${privateProject ? "private" : ""}`,
@@ -81,7 +84,8 @@ export default function ProjectList({ privateProject = false, title, owner }) {
       </div>
       {loading && <LoaderSpinner />}
       {data?.projects.length === 0 && <p>No Projects found</p>}
-      {error && <p>Failed to retrieve project list with error: {error.status} {error.message}</p>}
+      {!user && privateProject && <p className="text-center text-lg font-semibold">Please login to view private projects</p>}
+      {user && error && <p>Failed to retrieve project list with error: {error.status} {error.message}</p>}
       <ul>
         {data &&
           data.projects.map((project) => (
