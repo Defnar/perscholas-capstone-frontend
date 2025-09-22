@@ -116,7 +116,7 @@ export default function SingleProjectPage() {
             </div>
 
             {/*collaborator box*/}
-            <div className="sm:w-1/3 w-full border border-gray-200 shadow-md p-4 rounded-lg bg-white">
+            <div className="sm:w-1/3 md:w-1/4 w-full border border-gray-200 shadow-md p-4 rounded-lg bg-white">
               <Collaborators
                 collabList={projectData.user}
                 permissions={permissions}

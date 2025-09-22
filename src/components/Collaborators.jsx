@@ -221,15 +221,12 @@ export default function Collaborators({
 
       {/*Collaborator list*/}
       <div className="px-4 py-2">
-        <h2 className="font-bold text-center text-lg mb-2">
-          <span className="hidden md:inline">Collaborators</span>
-          <span className="md:hidden">Collab</span>
-        </h2>
+        <h2 className="font-bold text-center text-lg mb-2">Collaborators</h2>
         <ul className="space-y-1 mb-2">
           {collaborators.slice(0, spliceIndex).map((collab) => (
             <li
               key={collab.user._id}
-              className="px-2 py-1 rounded-md hover:bg-gray-100"
+              className="px-2 py-1 rounded-md hover:bg-gray-100 text-center"
             >
               <button onClick={() => editCollaborator(collab)}>
                 {collab.user.username}
@@ -240,8 +237,8 @@ export default function Collaborators({
       </div>
 
       {sidebar && (
-        <>
-          <p className="italic text-sm text-gray-600 mb-2">
+        <div className="flex flex-col ">
+          <p className="italic text-sm text-gray-600 mb-2 text-center">
             Showing {Math.min(visibleCount, collaborators.length)} of{" "}
             {collaborators.length}
           </p>
@@ -251,7 +248,7 @@ export default function Collaborators({
           >
             Show all
           </button>
-        </>
+        </div>
       )}
       {!sidebar && (
         <button
