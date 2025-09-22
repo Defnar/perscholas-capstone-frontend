@@ -44,9 +44,15 @@
 - From within the page, users who have the permission to do so may invite other users as well
 - implemented a double token system, allowing a short-term token to be saved in state, and a resfresh token to be stored in httponly cookie.  On app refresh or open, it will attempt to log user in using the refresh token if it exists
 - implemented the ability for a project owner to update the permissions another user has for a project
+- 
 # Missing/Planned features
 - users are not yet able to leave a project they are collaborating on.  the endpoint on the backend is set up, but no frontend connection has been made yet
 - users are not informed if their requests have been accepted or rejected yet, as this would take frontend and backend work
 - functionality to allower a user to display a different number of projects on the page
+- custom invite/join request messages
+- separate archive lists for projects and tasks
 
+# Potential features
+- using websockets to create a notification system and more robust message system.
+- handling cases where multiple users are updating, probably using data access timestamps to update timestamps.
 
