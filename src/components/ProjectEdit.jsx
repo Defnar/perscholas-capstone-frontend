@@ -20,7 +20,7 @@ export default function ProjectEdit({
     _id: _id || "",
     status: status || "To Do",
     deadline: deadline ? dayjs(deadline).format("YYYY-MM-DDTHH:mm") : null,
-    private: privateProject || true,
+    private: privateProject? true : false
   });
 
   const navigate = useNavigate();
@@ -172,9 +172,9 @@ export default function ProjectEdit({
           <input
             type="radio"
             name="private"
-            value={true}
+            value="true"
             onChange={handleChange}
-            checked={projectData.private ? true : undefined}
+            checked={projectData.private ? true : false}
           />
           private
         </label>
@@ -182,9 +182,9 @@ export default function ProjectEdit({
           <input
             type="radio"
             name="private"
-            value={false}
+            value="false"
             onChange={handleChange}
-            check={!projectData.private ? true : undefined}
+            checked={!projectData.private ? true : false}
           />
           public
         </label>
