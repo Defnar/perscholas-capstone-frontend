@@ -2,7 +2,7 @@ import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
 import useFetch from "../hooks/useFetch";
 import LoaderSpinner from "./LoaderSpinner";
-import { Bounce, toast } from "react-toastify";
+import toastMessage from "../utils/toastMessage";
 
 export default function Message() {
   const { api } = useContext(AuthContext);
@@ -13,64 +13,20 @@ export default function Message() {
     try {
       await api.post(`message/${messageId}`);
 
-      
-      toast(`successfully joined project, check your private projects`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-
+      toastMessage("successfully joined project, check your private projects");
     } catch (err) {
       console.log(err);
-      toast(`failed to load messages`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("failed to load messages");
     }
   };
 
   const rejectMessage = async (messageId) => {
     try {
       await api.post(`message/${messageId}/reject`);
-      
-      toast(`rejected joining the projecc`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
-
+      toastMessage("rejected joining the project");
     } catch (err) {
-      console.log(err)
-      toast(`error occurred, check logs for more info`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      console.log(err);
+      toastMessage("error occurred, check logs for more info");
     }
   };
 

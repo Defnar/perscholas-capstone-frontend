@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import LoaderSpinner from "./LoaderSpinner";
 import AuthContext from "../contexts/AuthContext";
-import { Bounce, toast } from "react-toastify";
+import toastMessage from "../utils/toastMessage";
 
 export default function EditCollab({
   user,
@@ -63,34 +63,14 @@ export default function EditCollab({
       setCollaborators((prev) =>
         prev.map((coll) => (coll.user._id === collab.user._id ? collab : coll))
       );
-
-      toast(`Successfully updated user`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("successfully updated user");
     } catch (err) {
       console.log(err);
-      toast(`something went wrong, please try again later: ${err}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage(
+        "something went wrong, please refer to console for more info"
+      );
     }
   };
-
   const checkPermission = (perm) => collab.permissions.includes(perm);
 
   return (

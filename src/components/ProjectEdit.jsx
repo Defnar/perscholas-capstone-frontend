@@ -1,8 +1,8 @@
 import { useContext, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
-import { Bounce, toast } from "react-toastify";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import toastMessage from "../utils/toastMessage";
 
 export default function ProjectEdit({
   closeModal,
@@ -52,17 +52,7 @@ export default function ProjectEdit({
     event.preventDefault();
 
     if (projectData.title.length === 0) {
-      toast(`title cannot be empty`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("Title cannot be empty")
       return;
     }
     try {
@@ -84,18 +74,7 @@ export default function ProjectEdit({
           private: projectData.private,
         });
       }
-
-      toast(`Successfully edited/created project`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("successfullly edited/created project")
       closeModal();
 
       //prevents error on page if project doesn't exist
@@ -107,17 +86,7 @@ export default function ProjectEdit({
       }
     } catch (err) {
       console.log(err);
-      toast(`error occurred during creation/edit`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("error occurred during creation/edit")
     }
   };
 

@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
-import { Bounce, toast } from "react-toastify";
+import toastMessage from "../utils/toastMessage";
 
 export default function JoinRequests({
   messages,
@@ -29,31 +29,10 @@ export default function JoinRequests({
       setMessageList((prev) =>
         prev.filter((message) => message._id !== messageId)
       );
-
-      toast(`User successfully added to project`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("User successfully added to project");
     } catch (err) {
       console.log(err);
-      toast(`failed to add user to project`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("Failed to add user to project");
     }
   };
 
@@ -63,34 +42,13 @@ export default function JoinRequests({
       await api.put(`projces/${projectId}/reject`, {
         messageId: messageId,
       });
-
-      toast(`successfully rejected user`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("successfully rejected user");
       setMessageList((prev) =>
         prev.filter((message) => message._id !== messageId)
       );
     } catch (err) {
       console.log(err);
-      toast(`failed to reject user from project`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("failed to reject user from project");
     }
   };
 

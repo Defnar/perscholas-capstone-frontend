@@ -3,9 +3,9 @@ import Modal from "./Modal";
 import Dropdown from "./Dropdown";
 import AuthContext from "../contexts/AuthContext";
 import JoinRequests from "./JoinRequests";
-import { Bounce, toast } from "react-toastify";
 import { EllipsisVerticalIcon } from "@heroicons/react/16/solid";
 import EditCollab from "./EditCollab";
+import toastMessage from "../utils/toastMessage";
 
 export default function Collaborators({
   collabList,
@@ -72,17 +72,7 @@ export default function Collaborators({
       setInviteList(response.data || []);
     } catch (err) {
       console.log(err);
-      toast(`${err}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage(`An error occurred searching for users`)
     }
   };
 
@@ -90,18 +80,11 @@ export default function Collaborators({
   const inviteUserById = async (userId) => {
     try {
       await api.post(`projects/${projectId}/invite`, { userId });
+      toastMessage("invited user to project")
     } catch (err) {
-      toast(`${err.response.data.error}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      console.log(err);
+      toastMessage("An error occurred inviting user to project")
+      
     }
   };
 

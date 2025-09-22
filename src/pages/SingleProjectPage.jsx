@@ -9,6 +9,7 @@ import Collaborators from "../components/Collaborators";
 import ProjectEdit from "../components/ProjectEdit";
 import LoaderSpinner from "../components/LoaderSpinner";
 import { Bounce, toast } from "react-toastify";
+import toastMessage from "../utils/toastMessage";
 
 export default function SingleProjectPage() {
   const { user } = useContext(AuthContext);
@@ -26,18 +27,7 @@ export default function SingleProjectPage() {
 
   useEffect(() => {
     console.log(error);
-    if (error)
-      toast(`Error occurred loading page: ${error}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+    if (error) toastMessage("Error occurred loading page");
   }, [error]);
 
   //sets project and task list

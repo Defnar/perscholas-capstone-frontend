@@ -7,7 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import Message from "./Messages";
 import { HomeIcon, PlusIcon, UserCircleIcon } from "@heroicons/react/24/solid";
-import { Bounce, toast } from "react-toastify";
+import toastMessage from "../utils/toastMessage";
 
 export default function Header() {
   const { api, user, setUser, setToken } = useContext(AuthContext);
@@ -41,29 +41,10 @@ export default function Header() {
       //navigate home after logout
       navigate("/");
 
-      toast(`successfully logged out`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("successfully logged out")
+      
     } catch (err) {
-      toast(`logout failed, see console for more information`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("logout failed, see console for more information")
       console.log(err);
     }
   };

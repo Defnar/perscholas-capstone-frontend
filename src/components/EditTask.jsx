@@ -1,7 +1,7 @@
 import { useContext, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
-import { Bounce, toast } from "react-toastify";
 import dayjs from "dayjs";
+import toastMessage from "../utils/toastMessage";
 
 export default function EditTask({
   title,
@@ -59,17 +59,7 @@ export default function EditTask({
             status: taskInfo.status,
           });
 
-      toast(`Task successfully edited`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("task successfully added/edited");
 
       if (taskId) {
         setTasks((prev) =>
@@ -86,21 +76,12 @@ export default function EditTask({
       closeModal();
     } catch (err) {
       console.log(err);
-      toast(`editing task failed, see logs for more information`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("task editing/adding failed");
     }
   };
 
-  const inputStyles = "flex-1 shadow-md border border-gray-200 h-7 bg-gray-100 px-2";
+  const inputStyles =
+    "flex-1 shadow-md border border-gray-200 h-7 bg-gray-100 px-2";
 
   return (
     <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
@@ -148,7 +129,11 @@ export default function EditTask({
         >
           Submit
         </button>
-        <button type="button" className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md shadow-md" onClick={handleCancel}>
+        <button
+          type="button"
+          className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded-md shadow-md"
+          onClick={handleCancel}
+        >
           Cancel
         </button>
       </div>

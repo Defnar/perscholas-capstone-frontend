@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { FaGithub } from "react-icons/fa";
-import { Bounce, toast } from "react-toastify";
+import toastMessage from "../utils/toastMessage";
 
 export default function LoginHandler({ closeModal }) {
   const { api, setToken, setUser } = useContext(AuthContext);
@@ -47,17 +47,7 @@ export default function LoginHandler({ closeModal }) {
     event.preventDefault();
 
     if (loginData.email === "" || loginData.password === "") {
-      toast(`Please enter an email and password`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("please enter an email and password");
 
       return;
     }
@@ -82,33 +72,12 @@ export default function LoginHandler({ closeModal }) {
         password: "",
         email: "",
       });
-
-      toast(`Successfully logged in`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("successfully logged in");
 
       closeModal();
     } catch (err) {
       console.log(err.message);
-      toast(`Failed to log in, check email and password`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("failed to log in, check email and password");
     }
   };
 
@@ -138,65 +107,28 @@ export default function LoginHandler({ closeModal }) {
       registrationData.confirmPassword.length < 8 ||
       registrationData.username.length < 6
     ) {
-      toast(`Please ensure all fields are filled out properly`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("Please ensure all fields are filled out properly");
 
       return;
     }
 
     if (!emailRegex.test(registrationData.email)) {
-      toast(`Not a valid email`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("Not a valid email");
       return;
     }
 
     if (!passwordRegex.test(registrationData.password)) {
-      toast(`Not a valid password: 1 Capital, 1 Number, 1 Symbol required`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage(
+        "Not a valid password: 1 capital, 1 number, 1 symbol required"
+      );
       return;
     }
 
     if (!registrationData.password === registrationData.confirmPassword) {
-      toast(`Passwords do not match`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("passwords do not match");
+
       return;
-    } 
+    }
 
     try {
       await api.post(`users/register`, {
@@ -204,33 +136,12 @@ export default function LoginHandler({ closeModal }) {
         email: registrationData.email,
         password: registrationData.password,
       });
-
-      toast(`User successfully registered, Please log in`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("User successfully registered, please log in");
 
       closeModal();
     } catch (err) {
       console.log(err);
-      toast(`${err.response.data.message}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage(err.response.data.message);
     }
   };
 
@@ -316,7 +227,6 @@ export default function LoginHandler({ closeModal }) {
       "Github Oauth"
     );
   };
-
 
   const inputStyles =
     "flex-1 shadow-md border border-gray-200 max-h-7 bg-gray-100 px-2";

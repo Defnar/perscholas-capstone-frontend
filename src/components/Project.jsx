@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import AuthContext from "../contexts/AuthContext";
-import { Bounce, toast } from "react-toastify";
+import toastMessage from "../utils/toastMessage";
 
 export default function Project({
   projectId,
@@ -18,30 +18,10 @@ export default function Project({
       await api.post(`message/projects/${projectId}`, {
         message: message,
       });
-      toast(`Please enter an email and password`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage("successfully requested to join the project");
     } catch (err) {
       console.log(err);
-      toast(`failed to send request: ${err.response.data.error}`, {
-        position: "top-center",
-        autoClose: 5000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: false,
-        progress: undefined,
-        theme: "light",
-        transition: Bounce,
-      });
+      toastMessage(`${err.response.data.error}`);
     }
   };
 
