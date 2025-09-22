@@ -12,6 +12,7 @@
 
 # LIVE DEPLOY:
 - https://perscholas-capstone-frontend.onrender.com/
+- side note: the front end, back end, and mongodb are all hosted on free services, and may take a while to be accessible.  Please be patient, give the front end about a minute and refresh.
 
  # Backend repository:
  - https://github.com/Defnar/perscholas-capstone-backend
