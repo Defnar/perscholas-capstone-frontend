@@ -142,6 +142,7 @@ export default function Header() {
             status={undefined}
             deadline={undefined}
             privateProject={undefined}
+            
           />
         </Modal>
       )}

@@ -2,6 +2,7 @@ import { useContext, useState } from "react";
 import AuthContext from "../contexts/AuthContext";
 import { Bounce, toast } from "react-toastify";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
 
 export default function ProjectEdit({
   closeModal,
@@ -11,7 +12,7 @@ export default function ProjectEdit({
   status,
   deadline,
   privateProject,
-  setEditedProjectData
+  setEditedProjectData,
 }) {
   const [projectData, setProjectData] = useState({
     title: title || "",
@@ -22,7 +23,7 @@ export default function ProjectEdit({
     private: privateProject || true,
   });
 
-  console.log(deadline);
+  const navigate = useNavigate();
 
   const { api } = useContext(AuthContext);
   const [titleValidity, setTitleValidity] = useState(true);
@@ -65,8 +66,9 @@ export default function ProjectEdit({
       return;
     }
     try {
+      let response
       if (projectData._id.length > 0) {
-        await api.put(`projects/${projectData._id}`, {
+        response = await api.put(`projects/${projectData._id}`, {
           title: projectData.title,
           description: projectData.description,
           status: projectData.status,
@@ -74,7 +76,7 @@ export default function ProjectEdit({
           private: projectData.private,
         });
       } else {
-        await api.post("projects/", {
+        response = await api.post("projects/", {
           title: projectData.title,
           description: projectData.description,
           status: projectData.status,
@@ -82,8 +84,6 @@ export default function ProjectEdit({
           private: projectData.private,
         });
       }
-
-      setEditedProjectData(prev => ({...prev, ...projectData}));
 
       toast(`Successfully edited/created project`, {
         position: "top-center",
@@ -97,6 +97,14 @@ export default function ProjectEdit({
         transition: Bounce,
       });
       closeModal();
+
+      //prevents error on page if project doesn't exist
+      if (projectData._id) {
+        setEditedProjectData((prev) => ({ ...prev, ...projectData }));
+      } else {
+        const id = response.data._id;
+        navigate(`/project/${id}`)
+      }
     } catch (err) {
       console.log(err);
       toast(`error occurred during creation/edit`, {

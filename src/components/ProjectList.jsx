@@ -36,6 +36,7 @@ export default function ProjectList({ privateProject = false, title, owner }) {
   );
   const [data, loading, error] = useFetch(url, params);
 
+  //navigates to project page to edit it
   const navigate = useNavigate();
   const handleClick = (projectId) => {
     if (!privateProject) return;
