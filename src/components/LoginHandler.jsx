@@ -406,7 +406,7 @@ export default function LoginHandler({ closeModal }) {
             Password:{" "}
           </label>
           <input
-            type="text"
+            type="password"
             name="password"
             className={inputStyles}
             value={registrationData.password}
@@ -423,7 +423,7 @@ export default function LoginHandler({ closeModal }) {
         <div className={inputDivStyles}>
           <label htmlFor="confirmPassword">confirm password:</label>
           <input
-            type="text"
+            type="password"
             name="confirmPassword"
             className={inputStyles}
             value={registrationData.confirmPassword}
