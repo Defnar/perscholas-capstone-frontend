@@ -8,7 +8,6 @@ import EditTask from "../components/EditTask";
 import Collaborators from "../components/Collaborators";
 import ProjectEdit from "../components/ProjectEdit";
 import LoaderSpinner from "../components/LoaderSpinner";
-import { Bounce, toast } from "react-toastify";
 import toastMessage from "../utils/toastMessage";
 
 export default function SingleProjectPage() {
